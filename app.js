@@ -9,7 +9,6 @@ const userContextMiddleware = require('./server/middleware/userContext');
 const { subscribe, unsubscribe, getSubscriptions } = require('./server/subscriptions');
 const { search } = require('./server/search');
 
-
 const app = express();
 
 const limiter = rateLimit({
@@ -37,9 +36,7 @@ app.use((req, res, next) => {
     next();
 });
 
-
 app.post('/search', search);
-
 app.post('/subscriptions', userContextMiddleware, subscribe);
 app.post('/unsubscribe', userContextMiddleware, unsubscribe);
 app.get('/subscriptions', userContextMiddleware, getSubscriptions);
@@ -48,7 +45,6 @@ app.listen(SERVER_PORT, () => {
     logger.info('### startListening ##');
     logger.info(`Node app is running on port:  ${SERVER_PORT}`);
 });
-
 
 module.exports = {
     server: app,
