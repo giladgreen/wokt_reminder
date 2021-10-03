@@ -1,8 +1,8 @@
 const moment = require('moment');
-const logger = require('./logger');
+const logger = require('../helpers/logger');
 const { getSpecificRestaurant } = require('./search');
-const { sendHtmlMail } = require('./email');
-const { subscriptions, Sequelize: { Op }, } = require('./models');
+const { sendHtmlMail } = require('../helpers/email');
+const { subscriptions, Sequelize: { Op }, } = require('../models');
 const INTERVAL = 30000;
 const PRON_INTERVAL = 1000 * 60 * 10;
 const AMOUNT = 15;

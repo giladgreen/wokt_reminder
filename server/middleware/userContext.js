@@ -1,8 +1,8 @@
 const moment = require('moment');
-const logger = require('../logger');
+const logger = require('../helpers/logger');
 const googleTokenStrategy = require('../helpers/google-auth');
 const facebookTokenStrategy = require('../helpers/facebook-auth');
-const { sendHtmlMail } = require('../email');
+const { sendHtmlMail } = require('../helpers/email');
 const { users, Sequelize: { Op }, } = require('../models');
 
 const EMAIL_USER = process.env.EMAIL_USER;

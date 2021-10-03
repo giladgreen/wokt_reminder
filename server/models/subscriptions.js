@@ -1,7 +1,7 @@
-const { dateFields } = require('../sequelize');
+const { dateFields } = require('../helpers/sequelize');
 
 module.exports = function (sequelize, DataTypes) {
-    const Registrations = sequelize.define('registrations', {
+    const Subscriptions = sequelize.define('subscriptions', {
         id: {
             type: DataTypes.STRING,
             primaryKey: true,
@@ -32,8 +32,8 @@ module.exports = function (sequelize, DataTypes) {
         ...dateFields,
     }, {
         paranoid: true,
-        tableName: 'registrations',
+        tableName: 'subscriptions',
     });
 
-    return Registrations;
+    return Subscriptions;
 };

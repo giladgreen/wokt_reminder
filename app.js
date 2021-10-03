@@ -4,10 +4,10 @@ const compression = require('compression');
 const bodyParser = require('body-parser');
 const rateLimit = require('express-rate-limit');
 const SERVER_PORT = process.env.PORT || 5002;
-const logger = require('./server/logger');
+const logger = require('./server/helpers/logger');
 const userContextMiddleware = require('./server/middleware/userContext');
-const { subscribe, unsubscribe, getSubscriptions } = require('./server/subscriptions');
-const { search } = require('./server/search');
+const { subscribe, unsubscribe, getSubscriptions } = require('./server/services/subscriptions');
+const { search } = require('./server/services/search');
 
 const app = express();
 

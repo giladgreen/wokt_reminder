@@ -1,4 +1,4 @@
-const { dateFields } = require('../sequelize');
+const { dateFields } = require('../helpers/sequelize');
 
 module.exports = function (sequelize, DataTypes) {
   const User = sequelize.define('users', {
