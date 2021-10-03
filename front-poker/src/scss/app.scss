@@ -1,0 +1,19 @@
+@import './bootstrap';
+
+$mobile-horizonal: 800px;
+$mobile-vertical: 530px;
+
+@mixin mobile-horizonal {
+  @media (max-width: $mobile-horizonal) and (min-width: $mobile-vertical) {
+    @content;
+  }
+}
+
+@mixin mobile-vertical {
+  @media (max-width: $mobile-vertical) {
+    @content;
+  }
+}
+
+
+@import './index';

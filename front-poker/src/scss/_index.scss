@@ -1,0 +1,131 @@
+body {
+  margin: 0;
+  font-family: sans-serif;
+  background-color: white;
+  font-size: 1em;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  padding: 10px;
+}
+.text-shadow{
+  text-shadow: 1px 1px black;
+}
+#search-restaurant-div{
+  margin-top: 10px;
+  margin-left: 10px;
+  padding: 20px;
+}
+
+#search-restaurant-input{
+  width: 60vw;
+}
+
+#search-restaurant-button{
+  margin-left: 1px;
+  width: 5vw;
+}
+@media screen and (max-width: 800px) {
+  #search-restaurant-button{
+    width: 20vw;
+  }
+}
+#search-results{
+  margin-top: 10px;
+ margin-left: 20px;
+  min-height: 400px;
+}
+.restaurant-result-div{
+
+  border: black 3px solid;
+  border-radius: 5px;
+  padding: 6px;
+
+  margin: 3px;
+  text-align: center;
+  img{
+    width: 16vw;
+  }
+
+}
+.mobile-width{
+  width: 85vw;
+}
+.offline{
+  border: darkred 2px solid;
+  cursor: pointer;
+  &:hover{
+    background: #b9fdff;
+  }
+}
+.overlay{
+  padding: 2px;
+  color: white;
+  background: gray;
+}
+
+.action-prompt{
+  padding: 2px;
+  color: white;
+  background: black;
+}
+.sivivator{
+  z-index: 99999;
+  width: 100vw;
+  height: 100vh;
+  text-align: center;
+ padding-top: 20vh;
+  position: absolute;
+  top:0;
+  left: 0;
+}
+#login-page{
+  z-index: 3;
+  width: 100vw;
+  height: 100vh;
+  text-align: center;
+  padding-top: 5vh;
+  position: absolute;
+  top:0;
+  left: 0;
+  font-size: 1em;
+}
+
+#login-data{
+  z-index: 4;
+  width: 100vw;
+  height: 100vh;
+  text-align: right;
+  padding-top: 5px;
+  padding-right: 10px;
+  position: absolute;
+  top:0;
+  left: 0;
+  font-size: 1em;
+  color: gray;
+}
+#log-out-button{
+color: black;
+  font-weight: bold;
+  padding-right: 30px;
+  cursor: pointer;
+}
+
+.login-button{
+  text-decoration: none;
+  font-size: 4.5vh;
+  width: 50vw;
+  background: #151135;
+  border-radius: 2vh;
+  color: white;
+  margin-top: 1vh;
+  padding: 1.5vh;
+  cursor: pointer;
+
+  position: fixed;
+  left: 25vw;
+
+  height: 9vh;
+  z-index: 100003;
+}
