@@ -140,7 +140,7 @@ class App extends Component {
             {overlay && overlay.length ? <div className="overlay">{overlay}</div> : <span></span>}
             {offline && searchPage ? <div className="action-prompt">Click to Subscribe</div>: <span></span> }
             {!searchPage ? <div className="action-prompt">Click to Unsubscribe</div>: <span></span> }
-            {!searchPage ? <div className="email-data">({email})</div>: <span></span> }
+
         </div>
     }
     onKeyChange = (tabKey)=>{

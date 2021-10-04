@@ -127,6 +127,12 @@ color: black;
 
 }
 @media screen and (max-width: 800px) {
+  .restaurant-result-div{
+    img{
+      width: 25vw;
+    }
+
+  }
   #search-restaurant-button{
     width: 20vw;
   }
