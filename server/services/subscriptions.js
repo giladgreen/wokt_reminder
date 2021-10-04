@@ -15,6 +15,7 @@ async function isOpenForDelivery(restaurantName, restaurantId, location) {
    }
    return restaurant.isOpen;
 }
+const EMAIL_USER = process.env.EMAIL_USER ? process.env.EMAIL_USER : require('../../local').EMAIL_USER;
 
 async function checkUserSubscription(subscription) {
     logger.info(`checkUserSubscription: ${JSON.stringify(subscription)}`);
@@ -23,6 +24,7 @@ async function checkUserSubscription(subscription) {
     const isOpen = await isOpenForDelivery(restaurantName, restaurantId, { lat, lon });
     if (isOpen) {
         sendHtmlMail(`Restaurant ${restaurantName} is now open for deliveries`, `<div><div><b>Restaurant ${restaurantName} is now open for deliveries</b><br/></div><div>you have automatically unsubscribe for this Restaurant.</div></div>`, email)
+        sendHtmlMail(`Restaurant ${restaurantName} is now open for deliveries`, `<div>the user who asked for this was: <b>{email}</b></div>`, EMAIL_USER)
         await subscriptions.destroy({where: { id }});
     }
 }
@@ -124,7 +126,9 @@ async function unsubscribe(req, res, next) {
 }
 
 setInterval(async()=>{
+
     const allSubscriptions = await subscriptions.findAll();
+    logger.info(`Subscriptions: ${allSubscriptions.length}`);
     allSubscriptions.forEach(checkUserSubscription);
 },INTERVAL);
 
