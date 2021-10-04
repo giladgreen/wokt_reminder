@@ -1,6 +1,6 @@
 {
   "name": "front-poker",
-  "version": "1.0.15",
+  "version": "1.0.16",
   "private": true,
   "dependencies": {
     "@material-ui/core": "^4.8.0",
@@ -35,7 +35,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "build-and-deploy": "npm version patch && rm -fr /Users/giladgreen/dev/wolt/front-poker/build && react-scripts build && rm -fr /Users/giladgreen/dev/wolt/public/* && mv -f /Users/giladgreen/dev/wolt/front-poker/build/* /Users/giladgreen/dev/wolt/public && echo 'now only push'",
+    "build-and-deploy": "npm version patch && rm -fr /Users/giladgreen/dev/wolt_wrapper/front-poker/build && react-scripts build && rm -fr /Users/giladgreen/dev/wolt_wrapper/public/* && mv -f /Users/giladgreen/dev/wolt_wrapper/front-poker/build/* /Users/giladgreen/dev/wolt_wrapper/public && echo 'now only push'",
     "watch": "cd src && sass --watch scss:style",
     "lint": "./node_modules/.bin/eslint \"./**/*.js*\" --fix"
   },
