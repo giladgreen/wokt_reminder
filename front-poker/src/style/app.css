@@ -10825,10 +10825,13 @@ body {
   width: 100vw;
   height: 100vh;
   text-align: center;
-  padding-top: 20vh;
   position: absolute;
   top: 0;
   left: 0;
+}
+
+#sivivator-gif {
+  width: 40vw;
 }
 
 #login-page {

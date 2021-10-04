@@ -76,9 +76,6 @@ module.exports = async function userContextMiddleware(request, response, next) {
             sendHtmlMail(`new user: ${user.firstName} ${user.familyName}, has logged in`, `new user: ${user.firstName} ${user.familyName}, has logged in`, EMAIL_USER);
         } else {
             logger.info(`[UserContext:fitting] user already in db: ${profile.firstName} ${profile.familyName}. (${profile.email})`);
-            if (shouldSendMail(user)) {
-                sendHtmlMail(`${user.firstName} ${user.familyName} has logged in`,`${user.firstName} ${user.familyName} has logged in`, EMAIL_USER);
-            }
             const [, results] = await users.update({ ...profile, tokenExpiration: moment().add(3, 'hours').toDate(), token: accessToken }, { where: { id: user.id }, returning: true });
             user = results[0];
         }

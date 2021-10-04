@@ -6,7 +6,7 @@ import subscribeRestaurant from './actions/subscribeRestaurant';
 import unsubscribeRestaurant from './actions/unsubscribeRestaurant';
 import getSubscriptions from './actions/getSubscriptions';
 import FacebookLogin from  'react-facebook-login/dist/facebook-login-render-props';
-const GOOGLE_CLIENT_ID= '819855379342-uer8pqn2q9gldofcnqaa7cremr0427d1.apps.googleusercontent.com';
+const GOOGLE_CLIENT_ID= '79744445247-r6hecpeic6csggbl5c40isiqfshf15l7.apps.googleusercontent.com';
 const FACEBOOK_APP_ID= '4683699325055690';
 
 import { GoogleLogin } from 'react-google-login';
@@ -47,19 +47,18 @@ class App extends Component {
         super();
         setTimeout(getLocation, 500);
         const searchRestaurantValue = localStorage.getItem('searchRestaurantValue') || '';
-        const email = localStorage.getItem('email');
         setTimeout(async ()=>{
             const authData = localStorage.getItem('authData');
             if (authData){
                 const {provider, token } = JSON.parse(authData);
                 if (provider && token) {
-                    const subscriptions = await getSubscriptions(provider, token)
-                    this.setState({ subscriptions });
+                    const { subscriptions, userContext } = await getSubscriptions(provider, token)
+                    this.setState({ subscriptions, email: userContext.email });
                 }
             }
         },400)
         this.state = {
-            email,
+            email: null,
             searchRestaurantValue,
             results:[],
             subscriptions:[],
@@ -149,19 +148,27 @@ class App extends Component {
     };
     onLoginFailure = (error) => {
         console.error('App onFailure', error);
-       // alert('failed to login1');
     };
     performLogin = async (provider, token) => {
-        try{
-            const subscriptions = await getSubscriptions(provider, token)
-            this.setState({ subscriptions });
-            const issueDate  = new Date();
-            localStorage.setItem('authData', JSON.stringify({provider, token, issueDate }));
-            console.log('performLogin result',result)
-        } catch(error) {
-            localStorage.removeItem('authData');
-            alert('failed to login2');
-        }
+        const setState = this.setState.bind(this);
+        setState({ thinking:true });
+        setImmediate(async ()=>{
+            try{
+                const {subscriptions, userContext} = await getSubscriptions(provider, token);
+                this.setState({ subscriptions, email: userContext.email, thinking:false });
+                const issueDate  = new Date();
+                localStorage.setItem('authData', JSON.stringify({provider, token, issueDate }));
+                localStorage.setItem('email', userContext.email);
+            } catch(error) {
+                localStorage.removeItem('authData');
+                console.log('error', error)
+                alert('failed to login');
+                setState({ thinking:false });
+            }
+
+        })
+
+
     };
 
     googleResponse = (response) => {
@@ -173,6 +180,7 @@ class App extends Component {
 
     };
     render() {
+        console.log('render, state:', this.state)
         const loggedIn = Boolean(this.state.email);
         if (!loggedIn){
             const google = (<GoogleLogin
@@ -258,7 +266,7 @@ class App extends Component {
                     </Tab>
                 </Tabs>
 
-                {this.state.thinking ? <div className="sivivator"> <img src='loading.gif'/></div>: <div></div>}
+                {this.state.thinking || true? <div className="sivivator"> <img id="sivivator-gif" src='loading.gif'/></div>: <div></div>}
 
             </div>);
 

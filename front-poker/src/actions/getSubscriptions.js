@@ -25,9 +25,7 @@ async function getSubscriptions(provider, token) {
         return reject(bodyObj.title);
       }
       const parsedBody = JSON.parse(body);
-      console.log('getSubscriptions, parsedBody',parsedBody)
-      localStorage.setItem('email', parsedBody.userContext.email);
-      return resolve(parsedBody.subscriptions);
+      return resolve(parsedBody);
     });
   });
 }

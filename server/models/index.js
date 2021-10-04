@@ -9,7 +9,6 @@ const DataTypes = Sequelize.DataTypes;
 
 const DATABASE_URL = process.env.DATABASE_URL ? process.env.DATABASE_URL : require('../../local').DATABASE_URL;
 const dbConnectionString = DATABASE_URL;
-
 const sequelize = new Sequelize(dbConnectionString, {
     dialect: 'postgres',
     logging: false,
