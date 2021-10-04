@@ -10849,7 +10849,7 @@ body {
 #login-data {
   z-index: 4;
   width: 100vw;
-  height: 100vh;
+  height: 4vh;
   text-align: right;
   padding-top: 5px;
   padding-right: 10px;
