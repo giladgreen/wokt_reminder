@@ -17,39 +17,40 @@ async function isOpenForDelivery(restaurantName, restaurantId, location) {
 }
 
 async function checkUserSubscription(subscription) {
-    logger.info(`checkUserSubscription: ${JSON.stringify(registration)}`);
+    logger.info(`checkUserSubscription: ${JSON.stringify(subscription)}`);
 
-    const {restaurantName, restaurantId, lat,lon, email, id} = registration;
+    const {restaurantName, restaurantId, lat,lon, email, id} = subscription;
     const isOpen = await isOpenForDelivery(restaurantName, restaurantId, { lat, lon });
     if (isOpen) {
-        sendHtmlMail(`Restaurant ${restaurantName} is now open for deliveries`, `<div><div><b>Restaurant ${restaurantName} is now open for deliveries</b><br/></div><div>you have been automatically unregister for this Restaurant.</div></div>`, email)
-        await registrations.destroy({where: { id }});
+        sendHtmlMail(`Restaurant ${restaurantName} is now open for deliveries`, `<div><div><b>Restaurant ${restaurantName} is now open for deliveries</b><br/></div><div>you have automatically unsubscribe for this Restaurant.</div></div>`, email)
+        await subscriptions.destroy({where: { id }});
     }
 }
 
 
-async function getUserRegistrations(email) {
-    const userRegistrations = await registrations.findAll({
+async function getUserSubscriptions(email) {
+    const userSubscriptions = await subscriptions.findAll({
         where: {
             email
         },
     })
-    return userRegistrations;
+    return userSubscriptions;
 }
 
 async function subscribe(req, res) {
     const { userContext } = req;
     console.log('subscribe, userContext', userContext);
-    const { restaurantName, restaurantId, location, emailAddress } = req.body;
+    const { email } = userContext;
+    const { restaurantName, restaurantId, location, } = req.body;
     try {
-      if (!restaurantName || !location || !location.lat || !location.lon || !emailAddress || !restaurantId) {
-          res.status(400).send({ message: 'missing attribute', restaurantName, location, emailAddress, restaurantId });
+      if (!restaurantName || !location || !location.lat || !location.lon || !email || !restaurantId) {
+          res.status(400).send({ message: 'missing attribute', restaurantName, location, email, restaurantId });
       }
 
-      logger.info(`REGISTER restaurantName: ${restaurantName},restaurantId:${restaurantId} emailAddress=${emailAddress},  lat=${location.lat}, lon=${location.lon}`);
+      logger.info(`subscribe restaurantName: ${restaurantName},restaurantId:${restaurantId} email=${email},  lat=${location.lat}, lon=${location.lon}`);
       const restaurant = await getSpecificRestaurant(restaurantName, restaurantId, location)
       if (!restaurant) {
-          res.status(400).send({ message: 'can not find this restaurant', restaurantName, location, emailAddress, restaurantId });
+          res.status(400).send({ message: 'can not find this restaurant', restaurantName, location, email, restaurantId });
       }
 
       if (restaurant.isOpen) {
@@ -57,14 +58,14 @@ async function subscribe(req, res) {
           return;
       }
       const { image: { url:restaurantImage}, venue: { address: restaurantAddress } } = restaurant;
-      const existing = await registrations.findOne({ where:{
+      const existing = await subscriptions.findOne({ where:{
               restaurantId,
-              email: emailAddress
+              email
           }})
       if (!existing) {
-          await registrations.create({
+          await subscriptions.create({
               restaurantId,
-              email: emailAddress,
+              email,
               lat:location.lat,
               lon:location.lon,
               restaurantName,
@@ -73,12 +74,12 @@ async function subscribe(req, res) {
           })
       }
 
-      const userRegistrations = await getUserRegistrations(emailAddress);
+      const userSubscriptions = await getUserSubscriptions(email);
 
-      return res.status(200).send({ registrations: userRegistrations });
+      return res.status(200).send({ subscriptions: userSubscriptions, userContext });
   } catch(e) {
-      logger.info('REGISTER ERROR');
-      logger.info(`restaurantName: ${restaurantName},restaurantId:${restaurantId} emailAddress=${emailAddress},  lat=${location.lat}, lon=${location.lon}`);
+      logger.info('subscribe ERROR');
+      logger.info(`restaurantName: ${restaurantName},restaurantId:${restaurantId} email=${email},  lat=${location.lat}, lon=${location.lon}`);
       logger.error(`error stack: ${e.stack}`);
       logger.error(`error message: ${e.message}`);
       return res.status(500).send({ message: 'something went wrong' });
@@ -87,33 +88,35 @@ async function subscribe(req, res) {
 
 async function getSubscriptions(req, res, next) {
     try {
-        const { email } = req.body;
-        if (!email ) {
-            res.status(400).send({ message: 'missing attribute', email });
-        }
-        const userRegistrations = await getUserRegistrations(email);
-        return res.status(200).send({ registrations: userRegistrations });
+        const { userContext } = req;
+        console.log('getSubscriptions, userContext', userContext);
+        const { email } = userContext;
+        const userSubscriptions = await getUserSubscriptions(email);
+        return res.status(200).send({ subscriptions: userSubscriptions, userContext });
     } catch(e) {
         next(e);
     }
 }
 async function unsubscribe(req, res, next) {
   try {
-      const { restaurantName, restaurantId, location, emailAddress } = req.body;
-      if (!restaurantName || !location || !emailAddress || !restaurantId) {
-          res.status(400).send({ message: 'missing attribute', restaurantName, location, emailAddress, restaurantId });
+      const { userContext } = req;
+      console.log('unsubscribe, userContext', userContext);
+      const { email } = userContext;
+      const { restaurantName, restaurantId, location } = req.body;
+      if (!restaurantName || !location || !email || !restaurantId) {
+          res.status(400).send({ message: 'missing attribute', restaurantName, location, email, restaurantId });
       }
 
-      logger.info(`UNREGISTER restaurantName: ${restaurantName},restaurantId:${restaurantId} emailAddress=${emailAddress},  lat=${location.lat}, lon=${location.lon}`);
+      logger.info(`unsubscribe restaurantName: ${restaurantName},restaurantId:${restaurantId} email=${email},  lat=${location.lat}, lon=${location.lon}`);
 
-      await registrations.destroy({
+      await subscriptions.destroy({
           where:{
               restaurantId,
-              email: emailAddress,
+              email,
           }
       })
-      const userRegistrations = await getUserRegistrations(emailAddress);
-      return res.status(200).send({ registrations: userRegistrations });
+      const userSubscriptions = await getUserSubscriptions(email);
+      return res.status(200).send({ subscriptions: userSubscriptions, userContext });
 
   } catch(e) {
       next(e);
@@ -126,12 +129,12 @@ setInterval(async()=>{
 },INTERVAL);
 
 
-//run every PRON_INTERVAL time nd delete from registrations table anything older then X hours
+//run every PRON_INTERVAL time nd delete from subscriptions table anything older then X hours
 setInterval(async()=>{
     logger.info(`pronning..`);
 
     const lastDate = moment().subtract(AMOUNT, UNITS).toDate();
-    await registrations.destroy({where:{
+    await subscriptions.destroy({where:{
             createdAt: {
                 [Op.lte]: lastDate,
             },

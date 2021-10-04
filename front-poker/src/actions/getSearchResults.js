@@ -19,8 +19,8 @@ async function getSearchResults(restaurantName, location) {
     request(options, (error, response, body) => {
       if (error || response.statusCode >= 400) {
         if (error) {
-          console.error('request cb error.failed to get registrations', error);
-          return reject('failed to get registrations');
+          console.error('request cb error.failed to getSearchResults', error);
+          return reject('failed to get getSearchResults');
         }
         const bodyObj = JSON.parse(body);
         console.error('failed to getSearchResults', bodyObj);

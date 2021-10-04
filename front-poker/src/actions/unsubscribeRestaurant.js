@@ -2,7 +2,7 @@
 import request from 'request';
 import URL_PREFIX from './url';
 
-async function unregisterRestaurant(restaurantName, restaurantId, location, provider, token) {
+async function unsubscribeRestaurant(restaurantName, restaurantId, location, provider, token) {
   const body = JSON.stringify({
     restaurantName,
     restaurantId,
@@ -12,7 +12,7 @@ async function unregisterRestaurant(restaurantName, restaurantId, location, prov
   return new Promise((resolve, reject) => {
     const options = {
       method: 'POST',
-      url: `${URL_PREFIX}/unregister`,
+      url: `${URL_PREFIX}/unsubscribe`,
       headers: {
         provider,
         'x-auth-token': token,
@@ -24,16 +24,19 @@ async function unregisterRestaurant(restaurantName, restaurantId, location, prov
     request(options, (error, response, body) => {
       if (error || response.statusCode >= 400) {
         if (error) {
-          console.error('request cb error.failed to get registrations', error);
-          return reject('failed to get registrations');
+          console.error('request cb error.failed to get unsubscribeRestaurant', error);
+          return reject('failed to get unsubscribeRestaurant');
         }
         const bodyObj = typeof body === object ? body : JSON.parse(body);
-        console.error('failed to unregisterRestaurant data', bodyObj);
+        console.error('failed to unsubscribeRestaurant data', bodyObj);
         return reject(bodyObj.title);
       }
-      return resolve(JSON.parse(body).registrations);
+      const parsedBody = JSON.parse(body);
+      console.log('unsubscribeRestaurant, parsedBody',parsedBody)
+      localStorage.setItem('email', parsedBody.userContext.email);
+      return resolve(parsedBody.subscriptions);
     });
   });
 }
 
-export default unregisterRestaurant;
+export default unsubscribeRestaurant;

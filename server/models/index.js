@@ -4,9 +4,10 @@ const pg = require('pg');
 pg.defaults.ssl = true;
 const Sequelize = require('sequelize');
 const fs = require('fs');
+
 const DataTypes = Sequelize.DataTypes;
 
-const DATABASE_URL = process.env.DATABASE_URL;
+const DATABASE_URL = process.env.DATABASE_URL ? process.env.DATABASE_URL : require('../../local').DATABASE_URL;
 const dbConnectionString = DATABASE_URL;
 
 const sequelize = new Sequelize(dbConnectionString, {

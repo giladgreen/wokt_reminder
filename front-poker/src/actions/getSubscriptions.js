@@ -17,14 +17,17 @@ async function getSubscriptions(provider, token) {
     request(options, (error, response, body) => {
       if (error || response.statusCode >= 400) {
         if (error) {
-          console.error('request cb error.failed to get registrations', error);
-          return reject('failed to get registrations');
+          console.error('request cb error.failed to get getSubscriptions', error);
+          return reject('failed to get getSubscriptions');
         }
         const bodyObj = typeof body === object ? body : JSON.parse(body);
-        console.error('failed to unregisterRestaurant data', bodyObj);
+        console.error('failed to getSubscriptions data', bodyObj);
         return reject(bodyObj.title);
       }
-      return resolve(JSON.parse(body).registrations);
+      const parsedBody = JSON.parse(body);
+      console.log('getSubscriptions, parsedBody',parsedBody)
+      localStorage.setItem('email', parsedBody.userContext.email);
+      return resolve(parsedBody.subscriptions);
     });
   });
 }
