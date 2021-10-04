@@ -26,11 +26,7 @@ body {
   margin-left: 1px;
   width: 5vw;
 }
-@media screen and (max-width: 800px) {
-  #search-restaurant-button{
-    width: 20vw;
-  }
-}
+
 #search-results{
   margin-top: 10px;
  margin-left: 20px;
@@ -104,7 +100,7 @@ body {
   position: absolute;
   top:0;
   left: 0;
-  font-size: 1em;
+  font-size: 0.8em;
   color: gray;
 }
 #log-out-button{
@@ -124,10 +120,22 @@ color: black;
   margin-top: 1vh;
   padding: 1.5vh;
   cursor: pointer;
-
-  position: fixed;
+  margin-left: 25vw;
   left: 25vw;
-
+  margin-bottom: 3vh;
   height: 9vh;
-  z-index: 100003;
+
+}
+@media screen and (max-width: 800px) {
+  #search-restaurant-button{
+    width: 20vw;
+  }
+  .login-button{
+
+    font-size: 3vh;
+    width: 70vw;
+
+    margin-left: 15vw;
+
+  }
 }

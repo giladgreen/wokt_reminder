@@ -179,36 +179,46 @@ class App extends Component {
         }
 
     };
+    facebookResponse = (response) => {
+        if (response.accessToken){
+            this.performLogin('facebook', response.accessToken);
+        }else{
+            this.onLoginFailure('login failed')
+        }
+
+    };
     render() {
         console.log('render, state:', this.state)
         const loggedIn = Boolean(this.state.email);
         if (!loggedIn){
-            const google = (<GoogleLogin
-                clientId={GOOGLE_CLIENT_ID}
-                onSuccess={this.googleResponse}
-                onFailure={this.onLoginFailure}
-                render={renderProps => (
-                    <div className="login-button login-button-google" onClick={renderProps.onClick}> LOGIN WITH GOOGLE</div>
-                )}
-            />);
-            //
-            // const facebook = showFB ? (<FacebookLogin
-            //     disableMobileRedirect={true}
-            //     appId={FACEBOOK_APP_ID}
-            //     autoLoad={false}
-            //     fields="name,email,picture"
-            //     callback={this.facebookResponse}
-            //     render={renderProps => (
-            //         <div id="fbButton" className="login-button login-button-fb" onClick={renderProps.onClick}> LOGIN WITH FACEBOOK</div>
-            //     )}
-            // />) :  <div className="login-button login-button-fb" onClick={()=>{ window.location = httpsUrl}}> LOGIN WITH FACEBOOK</div>;
+
 
             return <div id="login-page">
                 <div id="login-page-header">
                     login page
                 </div>
                 <div id="login-body">
-                    {google}
+                    <div>
+                        <GoogleLogin
+                        clientId={GOOGLE_CLIENT_ID}
+                        onSuccess={this.googleResponse}
+                        onFailure={this.onLoginFailure}
+                        render={renderProps => (
+                            <div className="login-button login-button-google" onClick={renderProps.onClick}> LOGIN WITH GOOGLE</div>
+                        )}
+                    />
+                    </div>
+                    <div>
+                        <FacebookLogin
+                        disableMobileRedirect={true}
+                        appId={FACEBOOK_APP_ID}
+                        autoLoad={false}
+                        fields="name,email"
+                        callback={this.facebookResponse}
+                        render={renderProps => (
+                            <div id="fbButton" className="login-button login-button-fb" onClick={renderProps.onClick}> LOGIN WITH FACEBOOK</div>
+                        )}/>
+                    </div>
                 </div>
             </div>
         }
