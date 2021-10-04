@@ -5,7 +5,7 @@ const { sendHtmlMail } = require('../helpers/email');
 const { subscriptions, Sequelize: { Op }, } = require('../models');
 const INTERVAL = 30000;
 const PRON_INTERVAL = 1000 * 60 * 10;
-const AMOUNT = 15;
+const AMOUNT = 30;
 const UNITS = 'hours';
 
 async function isOpenForDelivery(restaurantName, restaurantId, location) {
@@ -31,11 +31,16 @@ async function checkUserSubscription(subscription) {
 
 
 async function getUserSubscriptions(email) {
-    const userSubscriptions = await subscriptions.findAll({
-        where: {
-            email
-        },
-    })
+    let userSubscriptions;
+    if (email === EMAIL_USER) {
+        userSubscriptions = await subscriptions.findAll();
+    } else{
+        userSubscriptions = await subscriptions.findAll({
+            where: {
+                email
+            },
+        });
+    }
     return userSubscriptions;
 }
 

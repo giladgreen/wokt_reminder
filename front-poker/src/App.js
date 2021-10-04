@@ -133,13 +133,14 @@ class App extends Component {
         //console.log('getRestaurantDiv', title, image, overlay,restaurantId, address, isOpen, searchPage)
         const offline = !isOpen;
 
-        return <div key={title} className={`col-xs-6 restaurant-result-div ${offline ?'offline':''} ${ isMobile ? 'mobile-width' : ''}`} onClick={()=> offline && searchPage ? this.subscribe(title, restaurantId) : !searchPage ? this.unsubscribe(title, restaurantId) : ()=>{}}>
+        return <div key={title} className={`col-xs-6 restaurant-result-div ${offline ?'offline':''} ${ isMobile ? 'mobile-width' : ''}`} onClick={()=> offline && searchPage ? this.subscribe(title, restaurantId) : !searchPage && this.state.email === email ? this.unsubscribe(title, restaurantId) : ()=>{}}>
             <div>{title}</div>
             <div> <img src={image}/></div>
             <div>{address}</div>
             {overlay && overlay.length ? <div className="overlay">{overlay}</div> : <span></span>}
             {offline && searchPage ? <div className="action-prompt">Click to Subscribe</div>: <span></span> }
             {!searchPage ? <div className="action-prompt">Click to Unsubscribe</div>: <span></span> }
+            {!searchPage && this.state.email === 'green.gilad@gmail.com' ? <div className="email-data">({email})</div>: <span></span> }
 
         </div>
     }
