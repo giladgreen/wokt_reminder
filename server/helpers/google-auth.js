@@ -1,7 +1,7 @@
 const { OAuth2Strategy, InternalOAuthError } = require('passport-oauth/lib');
-
-const GOOGLE_AUTH_CLIENT_ID = process.env.GOOGLE_AUTH_CLIENT_ID || '819855379342-js3mkfftkk25qopes38dcbhr4oorup45.apps.googleusercontent.com';
-const GOOGLE_AUTH_CLIENT_SECRET =  process.env.GOOGLE_AUTH_CLIENT_SECRET || '***m';
+const GOOGLE_AUTH_CLIENT_ID = process.env.GOOGLE_AUTH_CLIENT_ID ? process.env.GOOGLE_AUTH_CLIENT_ID : require('../../local').GOOGLE_AUTH_CLIENT_ID;
+const GOOGLE_AUTH_CLIENT_SECRET = process.env.GOOGLE_AUTH_CLIENT_SECRET ? process.env.GOOGLE_AUTH_CLIENT_SECRET : require('../../local').GOOGLE_AUTH_CLIENT_SECRET;
+console.log('GOOGLE_AUTH_CLIENT_ID', GOOGLE_AUTH_CLIENT_ID)
 const options = {
   clientID: GOOGLE_AUTH_CLIENT_ID,
   clientSecret: GOOGLE_AUTH_CLIENT_SECRET,

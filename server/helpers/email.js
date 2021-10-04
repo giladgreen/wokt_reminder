@@ -2,9 +2,9 @@ const nodemailer = require('nodemailer');
 const logger = require('./logger');
 
 const from = 'info@walt-helper.com';
+const EMAIL_USER = process.env.EMAIL_USER ? process.env.EMAIL_USER : require('../../local').EMAIL_USER;
+const EMAIL_PASSWORD = process.env.EMAIL_PASSWORD ? process.env.EMAIL_PASSWORD : require('../../local').EMAIL_PASSWORD;
 
-const EMAIL_USER = process.env.EMAIL_USER;
-const EMAIL_PASSWORD = process.env.EMAIL_PASSWORD;
 
 
 function sendHtmlMail(subject, html, to) {
