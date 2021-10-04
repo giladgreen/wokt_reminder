@@ -266,7 +266,7 @@ class App extends Component {
                     </Tab>
                 </Tabs>
 
-                {this.state.thinking || true? <div className="sivivator"> <img id="sivivator-gif" src='loading.gif'/></div>: <div></div>}
+                {this.state.thinking ? <div className="sivivator"> <img id="sivivator-gif" src='loading.gif'/></div>: <div></div>}
 
             </div>);
 
