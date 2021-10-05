@@ -33,23 +33,20 @@ async function checkUserSubscription(subscription) {
 async function getUserSubscriptions(email) {
     let userSubscriptions;
     if (email === EMAIL_USER) {
-        userSubscriptions = await subscriptions.findAll();
-        const allUsers = await users.findAll();
+        userSubscriptions = (await subscriptions.findAll()).map(item => item.toJSON());
+        const allUsers = (await users.findAll()).map(item => item.toJSON());
         userSubscriptions = userSubscriptions.map((userSubscription) =>{
             const newUserSubscription = { ... userSubscription}
-            newUserSubscription.subscriber = allUsers.find(user => user.email === userSubscription.email).toJSON();
+            newUserSubscription.subscriber = allUsers.find(user => user.email === userSubscription.email);
             newUserSubscription.isAdmin = userSubscription.email === EMAIL_USER;
             return newUserSubscription;
         });
-        console.log('userSubscriptions', JSON.stringify(userSubscriptions))
-        console.log('#####')
-
     } else{
-        userSubscriptions = await subscriptions.findAll({
+        userSubscriptions = (await subscriptions.findAll({
             where: {
                 email
             },
-        });
+        })).map(item => item.toJSON());
     }
     return userSubscriptions;
 }
