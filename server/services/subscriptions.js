@@ -37,6 +37,13 @@ async function getUserSubscriptions(email) {
         const allUsers = await users.findAll();
         userSubscriptions.forEach((userSubscription) =>{
             userSubscription.subscriber = allUsers.find(user => user.email === userSubscription.email);
+            if (!userSubscription.subscriber){
+                console.log('#####')
+                console.log('allUsers:', allUsers.map(u=>u.email)).join(',')
+                console.log('#####')
+                console.log('userSubscription', JSON.stringify(userSubscription))
+                console.log('#####')
+            }
             userSubscription.isAdmin = userSubscription.email === EMAIL_USER;
         })
     } else{
