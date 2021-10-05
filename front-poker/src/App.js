@@ -8,7 +8,7 @@ import getSubscriptions from './actions/getSubscriptions';
 import FacebookLogin from  'react-facebook-login/dist/facebook-login-render-props';
 const GOOGLE_CLIENT_ID= '79744445247-r6hecpeic6csggbl5c40isiqfshf15l7.apps.googleusercontent.com';
 const FACEBOOK_APP_ID= '4683699325055690';
-
+const MY_MAIL = 'green.gilad@gmail.com';
 import { GoogleLogin } from 'react-google-login';
 import Tabs from 'react-bootstrap/Tabs'
 import Tab from 'react-bootstrap/Tab'
@@ -129,8 +129,9 @@ class App extends Component {
         })
     }
 
-    getRestaurantDiv = (title, image, overlay,restaurantId, address, isOpen, searchPage, email)=>{
-        //console.log('getRestaurantDiv', title, image, overlay,restaurantId, address, isOpen, searchPage)
+    getRestaurantDiv = (title, image, overlay,restaurantId, address, isOpen, searchPage, subscriber)=>{
+        console.log('getRestaurantDiv', title, image, overlay,restaurantId, address, isOpen, searchPage)
+        console.log('subscriber', subscriber)
         const offline = !isOpen;
 
         return <div key={title} className={`col-xs-6 restaurant-result-div ${offline ?'offline':''} ${ isMobile ? 'mobile-width' : ''}`} onClick={()=> offline && searchPage ? this.subscribe(title, restaurantId) : !searchPage && this.state.email === email ? this.unsubscribe(title, restaurantId) : ()=>{}}>
@@ -140,7 +141,7 @@ class App extends Component {
             {overlay && overlay.length ? <div className="overlay">{overlay}</div> : <span></span>}
             {offline && searchPage ? <div className="action-prompt">Click to Subscribe</div>: <span></span> }
             {!searchPage ? <div className="action-prompt">Click to Unsubscribe</div>: <span></span> }
-            {!searchPage && this.state.email === 'green.gilad@gmail.com' ? <div className="email-data">({email})</div>: <span></span> }
+            {!searchPage && this.state.email === MY_MAIL ? <div className="email-data">({email})</div>: <span></span> }
 
         </div>
     }
@@ -224,6 +225,22 @@ class App extends Component {
             </div>
         }
 
+        let subscriptionsDivs = <div></div>;
+        if (this.state.subscriptions.length) {
+            const subscriptions = this.state.subscriptions[0].subscriber
+                ? this.state.subscriptions.sort((subscriptionA, subscriptionB)=>{
+                    const { subscriber: subscriberA } = subscriptionA;
+                    const { subscriber: subscriberB } = subscriptionB;
+                    if (subscriberA.email === MY_MAIL) return -1;
+                    if (subscriberB.email === MY_MAIL) return 1;
+                    return 0;
+                }) : this.state.subscriptions;
+
+            subscriptionsDivs = subscriptions.map(subscription =>{
+                const { restaurantName: title, restaurantImage: image, restaurantId, restaurantAddress: address, subscriber } = subscription;
+                return this.getRestaurantDiv(title, image, null,restaurantId, address, false, false, subscriber);
+            })
+        }
 
         return (
             <div>
@@ -266,12 +283,7 @@ class App extends Component {
                                 {this.state.subscriptions.length} subscriptions
                             </div>
                             <div className="row">
-                                {
-                                    this.state.subscriptions.map(subscription =>{
-                                        const { restaurantName: title, restaurantImage: image, restaurantId, restaurantAddress: address, email } = subscription;
-                                         return this.getRestaurantDiv(title, image, null,restaurantId, address, false, false, email);
-                                    })
-                                }
+                                {subscriptionsDivs}
                             </div>
                         </div>
                     </Tab>

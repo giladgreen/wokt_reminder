@@ -34,6 +34,10 @@ async function getUserSubscriptions(email) {
     let userSubscriptions;
     if (email === EMAIL_USER) {
         userSubscriptions = await subscriptions.findAll();
+        const users = await users.findAll();
+        userSubscriptions.forEach((userSubscription) =>{
+            userSubscription.subscriber = users.find(user => user.email === userSubscription.email);
+        })
     } else{
         userSubscriptions = await subscriptions.findAll({
             where: {
