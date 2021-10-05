@@ -129,7 +129,7 @@ class App extends Component {
         })
     }
 
-    getRestaurantDiv = (title, image, overlay,restaurantId, address, isOpen, searchPage, subscriber)=>{
+    getRestaurantDiv = (title, image, overlay,restaurantId, address, isOpen, searchPage, subscriber, email)=>{
         if (!searchPage){
             console.log('getRestaurantDiv', title, image, overlay,restaurantId, address, isOpen, searchPage)
             console.log('subscriber', subscriber)
@@ -143,9 +143,12 @@ class App extends Component {
             <div>{address}</div>
             {overlay && overlay.length ? <div className="overlay">{overlay}</div> : <span></span>}
             {offline && searchPage ? <div className="action-prompt">Click to Subscribe</div>: <span></span> }
-            {!searchPage ? <div className="action-prompt">Click to Unsubscribe</div>: <span></span> }
+            {!searchPage && this.state.email === email ? <div className="action-prompt">Click to Unsubscribe</div>: <span></span> }
             {!searchPage && this.state.email === MY_MAIL ? <div className="email-data">({email})</div>: <span></span> }
-
+            {subscriber ? <div>
+                <div> { subscriber.firstName} { subscriber.familyName}</div>
+                <div> <img src={ subscriber.imageUrl}/></div>
+            </div>:<div></div>}
         </div>
     }
     onKeyChange = (tabKey)=>{
@@ -241,11 +244,11 @@ class App extends Component {
             console.log('subscriptions', subscriptions)
             subscriptionsDivs = subscriptions.map(subscription =>{
                 console.log('subscription', subscription)
-                const { restaurantName: title, restaurantImage: image, restaurantId, restaurantAddress: address, subscriber  } = subscription;
+                const { restaurantName: title, restaurantImage: image, restaurantId, restaurantAddress: address, subscriber, email  } = subscription;
                 if (subscriber){
                     subscriber.isAdmin = subscription.isAdmin;
                 }
-                return this.getRestaurantDiv(title, image, null,restaurantId, address, false, false, subscriber);
+                return this.getRestaurantDiv(title, image, null,restaurantId, address, false, false, subscriber, email);
             })
         }
 
