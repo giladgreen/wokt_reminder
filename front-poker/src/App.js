@@ -230,6 +230,7 @@ class App extends Component {
 
         let subscriptionsDivs = <div></div>;
         if (this.state.subscriptions.length) {
+            console.log('this.state.subscriptions', this.state.subscriptions)
             const subscriptions = this.state.subscriptions[0].subscriber
                 ? this.state.subscriptions.sort((subscriptionA, subscriptionB)=>{
                     if (subscriptionA.isAdmin) return -1;
@@ -237,8 +238,13 @@ class App extends Component {
                     return 0;
                 }) : this.state.subscriptions;
 
+            console.log('subscriptions', subscriptions)
             subscriptionsDivs = subscriptions.map(subscription =>{
-                const { restaurantName: title, restaurantImage: image, restaurantId, restaurantAddress: address, subscriber } = subscription;
+                console.log('subscription', subscription)
+                const { restaurantName: title, restaurantImage: image, restaurantId, restaurantAddress: address, subscriber  } = subscription;
+                if (subscriber){
+                    subscriber.isAdmin = subscription.isAdmin;
+                }
                 return this.getRestaurantDiv(title, image, null,restaurantId, address, false, false, subscriber);
             })
         }
