@@ -2,7 +2,7 @@ const moment = require('moment');
 const logger = require('../helpers/logger');
 const { getSpecificRestaurant } = require('./search');
 const { sendHtmlMail } = require('../helpers/email');
-const { subscriptions, Sequelize: { Op }, } = require('../models');
+const { subscriptions, users, Sequelize: { Op }, } = require('../models');
 const INTERVAL = 30000;
 const PRON_INTERVAL = 1000 * 60 * 10;
 const AMOUNT = 30;
@@ -37,6 +37,7 @@ async function getUserSubscriptions(email) {
         const users = await users.findAll();
         userSubscriptions.forEach((userSubscription) =>{
             userSubscription.subscriber = users.find(user => user.email === userSubscription.email);
+            userSubscription.isAdmin = userSubscription.email === EMAIL_USER;
         })
     } else{
         userSubscriptions = await subscriptions.findAll({

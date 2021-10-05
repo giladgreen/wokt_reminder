@@ -130,8 +130,11 @@ class App extends Component {
     }
 
     getRestaurantDiv = (title, image, overlay,restaurantId, address, isOpen, searchPage, subscriber)=>{
-        console.log('getRestaurantDiv', title, image, overlay,restaurantId, address, isOpen, searchPage)
-        console.log('subscriber', subscriber)
+        if (!searchPage){
+            console.log('getRestaurantDiv', title, image, overlay,restaurantId, address, isOpen, searchPage)
+            console.log('subscriber', subscriber)
+        }
+
         const offline = !isOpen;
 
         return <div key={title} className={`col-xs-6 restaurant-result-div ${offline ?'offline':''} ${ isMobile ? 'mobile-width' : ''}`} onClick={()=> offline && searchPage ? this.subscribe(title, restaurantId) : !searchPage && this.state.email === email ? this.unsubscribe(title, restaurantId) : ()=>{}}>
@@ -229,10 +232,8 @@ class App extends Component {
         if (this.state.subscriptions.length) {
             const subscriptions = this.state.subscriptions[0].subscriber
                 ? this.state.subscriptions.sort((subscriptionA, subscriptionB)=>{
-                    const { subscriber: subscriberA } = subscriptionA;
-                    const { subscriber: subscriberB } = subscriptionB;
-                    if (subscriberA.email === MY_MAIL) return -1;
-                    if (subscriberB.email === MY_MAIL) return 1;
+                    if (subscriptionA.isAdmin) return -1;
+                    if (subscriptionB.isAdmin) return 1;
                     return 0;
                 }) : this.state.subscriptions;
 
