@@ -20,11 +20,29 @@ const EMAIL_USER = process.env.EMAIL_USER ? process.env.EMAIL_USER : require('..
 async function checkUserSubscription(subscription) {
     logger.info(`checkUserSubscription: ${JSON.stringify(subscription)}`);
 
-    const {restaurantName, restaurantId, lat,lon, email, id} = subscription;
+    const {restaurantName, restaurantId, lat,lon, email, id, restaurantImage, restaurantAddress} = subscription;
     const isOpen = await isOpenForDelivery(restaurantName, restaurantId, { lat, lon });
     if (isOpen) {
         sendHtmlMail(`Restaurant ${restaurantName} is now open for deliveries`, `<div><div><b>Restaurant ${restaurantName} is now open for deliveries</b><br/></div><div>you have automatically unsubscribe for this Restaurant.</div></div>`, email)
-        sendHtmlMail(`Restaurant ${restaurantName} is now open for deliveries`, `<div>the user who asked for this was: <b>{email}</b></div>`, EMAIL_USER)
+        if (email !== EMAIL_USER){
+            const userInfo = (await users.findOne({where:{ email}})) || {};
+
+            sendHtmlMail(`Restaurant open.. `,
+                `
+            <div>
+                <div>Subscriber info: </div>
+                <div> <b>${email}</b> </div>
+                <div> <b>${userInfo.firstName} ${userInfo.familyName}</b> </div>
+                <div> <img src="${userInfo.imageUrl}"/> </div>
+               
+                <br/>
+                <div>Restaurant info: </div>
+                <div>${restaurantName} </div>
+                 <div> <img src="${restaurantImage}"/> </div>
+                <div>${restaurantAddress} </div>
+            </div>`, EMAIL_USER);
+
+        }
         await subscriptions.destroy({where: { id }});
     }
 }
@@ -53,7 +71,6 @@ async function getUserSubscriptions(email) {
 
 async function subscribe(req, res) {
     const { userContext } = req;
-    console.log('subscribe, userContext', userContext);
     const { email } = userContext;
     const { restaurantName, restaurantId, location, } = req.body;
     try {
