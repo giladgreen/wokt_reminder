@@ -10929,14 +10929,34 @@ body {
     width: 25vw;
   }
 
-  #search-restaurant-button {
-    width: 20vw;
-  }
-
   .login-button {
     font-size: 3vh;
     width: 70vw;
+    margin-top: 2vh;
     margin-right: 15vw;
+  }
+
+  #main-header {
+    margin-top: 3vh;
+    font-size: 1.7em;
+  }
+
+  #secondary-header {
+    font-size: 0.9em;
+    margin-bottom: 20px;
+  }
+
+  #search-restaurant-div {
+    margin-top: 20px;
+  }
+
+  #search-restaurant-input {
+    width: 50vw;
+  }
+
+  #search-restaurant-button {
+    width: 20vw;
+    margin-left: 10vw;
   }
 }
 
