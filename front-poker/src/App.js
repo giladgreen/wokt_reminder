@@ -105,7 +105,7 @@ class App extends Component {
         const {provider, token } = JSON.parse(localStorage.getItem('authData'));
 
         setImmediate(async ()=>{
-            if (confirm("Unsubscribe?")){
+            if (confirm("להסיר את הרישום?")){
                 console.log('about to unsubscribe for restaurant:', name, restaurantId);
                 const subscriptions = await unsubscribeRestaurant(name, restaurantId, location, provider, token);
                 console.log('subscriptions:', subscriptions);
@@ -139,18 +139,21 @@ class App extends Component {
 
         return <div key={title} className={`col-xs-6 restaurant-result-div ${offline ?'offline':''} ${ isMobile ? 'mobile-width' : ''}`} onClick={()=> offline && searchPage ? this.subscribe(title, restaurantId) : !searchPage && this.state.email === email ? this.unsubscribe(title, restaurantId) : ()=>{}}>
             <div> <img src={image}/></div>
-            <div className="restaurant-title">{title}</div>
-            <div className="restaurant-short-description">{shortDescription}</div>
+            <div className="rest-data">
+                <div className="restaurant-title">{title}</div>
+                <div className="restaurant-short-description">{shortDescription}</div>
 
-            <div className="restaurant-address">{address}</div>
-            {overlay && overlay.length ? <div className="overlay">{overlay}</div> : <span></span>}
-            {offline && searchPage ? <div className="action-prompt">Click to Subscribe</div>: <span></span> }
-            {!searchPage && this.state.email === email ? <div className="action-prompt">Click to Unsubscribe</div>: <span></span> }
-            {!searchPage && this.state.email === MY_MAIL ? <div className="email-data">({email})</div>: <span></span> }
-            {subscriber ? <div>
-                <div> { subscriber.firstName} { subscriber.familyName}</div>
-                <div> <img src={ subscriber.imageUrl}/></div>
-            </div>:<div></div>}
+                <div className="restaurant-address">{address}</div>
+                {overlay && overlay.length ? <div className="overlay">{overlay}</div> : <span></span>}
+                {offline && searchPage ? <div className="action-prompt">לחץ לרישום</div>: <span></span> }
+                {!searchPage && this.state.email === email ? <div className="action-prompt">להסרת רישום</div>: <span></span> }
+                {!searchPage && this.state.email === MY_MAIL ? <div className="email-data">({email})</div>: <span></span> }
+                {subscriber ? <div>
+                    <div> { subscriber.firstName} { subscriber.familyName}</div>
+                    <div> <img src={ subscriber.imageUrl}/></div>
+                </div>:<div></div>}
+            </div>
+
         </div>
     }
     onKeyChange = (tabKey)=>{
@@ -205,7 +208,7 @@ class App extends Component {
 
             return <div id="login-page">
                 <div id="login-page-header">
-                    login page
+                    התחברות
                 </div>
                 <div id="login-body">
                     <div>
@@ -214,7 +217,7 @@ class App extends Component {
                         onSuccess={this.googleResponse}
                         onFailure={this.onLoginFailure}
                         render={renderProps => (
-                            <div className="login-button login-button-google" onClick={renderProps.onClick}> LOGIN WITH GOOGLE</div>
+                            <div className="login-button login-button-google" onClick={renderProps.onClick}> התחבר באמצעות גוגל</div>
                         )}
                     />
                     </div>
@@ -226,7 +229,7 @@ class App extends Component {
                         fields="name,email"
                         callback={this.facebookResponse}
                         render={renderProps => (
-                            <div id="fbButton" className="login-button login-button-fb" onClick={renderProps.onClick}> LOGIN WITH FACEBOOK</div>
+                            <div id="fbButton" className="login-button login-button-fb" onClick={renderProps.onClick}> התחבר באמצעות פייסבוק</div>
                         )}/>
                     </div>
                 </div>
@@ -261,22 +264,27 @@ class App extends Component {
                     <span id="log-out-button" onClick={()=>{
                         localStorage.removeItem('email');
                         this.setState({ email: null});
-                    }}>log out</span>
+                    }}>התנתקות</span>
                 </div>
-                <div>
-                    <h1><u>Wolt Helper</u></h1>
+                <div id="main-header">
+                   <u>תוסף לוולט</u>
+                </div>
+                <div id="secondary-header">
+הירשמו לקבל התראה כשמסעדה נפתחת למשלוחים
                 </div>
                 <Tabs defaultActiveKey="search" id="uncontrolled-tab-example" style={{fontSize: isMobile ? "0.8em" : "1em"}} activeKey={this.state.tabKey} onSelect={this.onKeyChange} variant="pills">
-                    <Tab eventKey="search" title="search" >
+                    <Tab eventKey="search" title="חיפוש מסעדות" >
                         <div>
                             <div id="search-restaurant-div">
-
                                 <input type="text" id="search-restaurant-input" value={this.state.searchRestaurantValue} onChange={this.onSearchRestaurantValueChange} />
-                                <button id="search-restaurant-button" onClick={this.search} disabled={this.state.searchRestaurantValue.length === 0}>search</button>
+                                <button id="search-restaurant-button" onClick={this.search} disabled={this.state.searchRestaurantValue.length === 0}>חיפוש</button>
                             </div>
                             <div id="search-results">
                                 { this.state.searchWasClicked ? <div>
-                                    {this.state.results.length} restaurants found.
+                                   <span className="spaced-span">  נמצאו</span>
+                                    {this.state.results.length}
+
+                                    <span className="spaced-span">  תוצאות</span>
                                 </div> : <div></div>}
                                 <div className="row">
                                     {
@@ -289,10 +297,11 @@ class App extends Component {
                             </div>
                         </div>
                     </Tab>
-                    <Tab eventKey="subscriptions" title="subscriptions" >
+                    <Tab eventKey="subscriptions" title="רישומים" >
                         <div>
-                            <div>
-                                {this.state.subscriptions.length} subscriptions
+                            <div  id="subscriptions-results">
+                                <span className="spaced-span">  נמצאו</span>
+                                {this.state.subscriptions.length}
                             </div>
                             <div className="row">
                                 {subscriptionsDivs}
