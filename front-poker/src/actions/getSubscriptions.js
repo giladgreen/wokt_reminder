@@ -20,7 +20,7 @@ async function getSubscriptions(provider, token) {
           console.error('request cb error.failed to get getSubscriptions', error);
           return reject('failed to get getSubscriptions');
         }
-        const bodyObj = typeof body === object ? body : JSON.parse(body);
+        const bodyObj = typeof body === 'object' ? body : JSON.parse(body);
         console.error('failed to getSubscriptions data', bodyObj);
         return reject(bodyObj.title);
       }

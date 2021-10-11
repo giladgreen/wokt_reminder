@@ -129,7 +129,7 @@ class App extends Component {
         })
     }
 
-    getRestaurantDiv = (title, image, overlay,restaurantId, address, isOpen, searchPage, subscriber, email)=>{
+    getRestaurantDiv = (title,shortDescription, image, overlay,restaurantId, address, isOpen, searchPage, subscriber, email)=>{
         if (!searchPage){
             console.log('getRestaurantDiv', title, image, overlay,restaurantId, address, isOpen, searchPage)
             console.log('subscriber', subscriber)
@@ -138,9 +138,11 @@ class App extends Component {
         const offline = !isOpen;
 
         return <div key={title} className={`col-xs-6 restaurant-result-div ${offline ?'offline':''} ${ isMobile ? 'mobile-width' : ''}`} onClick={()=> offline && searchPage ? this.subscribe(title, restaurantId) : !searchPage && this.state.email === email ? this.unsubscribe(title, restaurantId) : ()=>{}}>
-            <div>{title}</div>
             <div> <img src={image}/></div>
-            <div>{address}</div>
+            <div className="restaurant-title">{title}</div>
+            <div className="restaurant-short-description">{shortDescription}</div>
+
+            <div className="restaurant-address">{address}</div>
             {overlay && overlay.length ? <div className="overlay">{overlay}</div> : <span></span>}
             {offline && searchPage ? <div className="action-prompt">Click to Subscribe</div>: <span></span> }
             {!searchPage && this.state.email === email ? <div className="action-prompt">Click to Unsubscribe</div>: <span></span> }
@@ -248,7 +250,7 @@ class App extends Component {
                 if (subscriber){
                     subscriber.isAdmin = subscription.isAdmin;
                 }
-                return this.getRestaurantDiv(title, image, null,restaurantId, address, false, false, subscriber, email);
+                return this.getRestaurantDiv(title,'', image, null,restaurantId, address, false, false, subscriber, email);
             })
         }
 
@@ -279,8 +281,8 @@ class App extends Component {
                                 <div className="row">
                                     {
                                         this.state.results.map((result) =>{
-                                            const {title, image: {url: image}, overlay, track_id: restaurantId, venue: { address}, isOpen }= result;
-                                            return this.getRestaurantDiv(title, image, overlay,restaurantId, address, isOpen, true);
+                                            const {title, image: {url: image}, overlay, track_id: restaurantId, venue: { address, short_description}, isOpen }= result;
+                                            return this.getRestaurantDiv(title, short_description, image, overlay,restaurantId, address, isOpen, true);
                                         })
                                     }
                                 </div>

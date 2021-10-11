@@ -4,7 +4,10 @@ const logger = require('../helpers/logger');
 async function getSearchResults(restaurantName, location) {
     try {
         const searchPath = `https://restaurant-api.wolt.com/v1/pages/search?q=${encodeURIComponent(restaurantName)}&lat=${location.lat}&lon=${location.lon}`;
-        const { data: { sections } } = await axios.get(searchPath);
+        const options = {
+            headers: {'app-language': 'he'}
+        };
+        const { data: { sections } } = await axios.get(searchPath, options);
         if (!sections[0].items){
             return [];
         }

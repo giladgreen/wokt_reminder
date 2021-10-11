@@ -33,23 +33,39 @@ body {
   min-height: 400px;
 }
 .restaurant-result-div{
-
-  border: black 3px solid;
+  text-align: right;
   border-radius: 5px;
-  padding: 6px;
+
 
   margin: 3px;
-  text-align: center;
+
   img{
     width: 16vw;
+    border-top-left-radius: 10%;
+    border-top-right-radius: 10%;
   }
 
 }
+.restaurant-title {
+  font-weight: bold;
+  font-size: 1.2em;
+  color: black;
+}
+.restaurant-short-description{
+  font-size: 1em;
+  color: #010101;
+}
+
+.restaurant-address{
+  font-size: 0.8em;
+  color: #111111;
+}
+
 .mobile-width{
   width: 85vw;
 }
 .offline{
-  border: darkred 2px solid;
+
   cursor: pointer;
   &:hover{
     background: #b9fdff;
