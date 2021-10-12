@@ -29,7 +29,7 @@ body {
 #search-restaurant-button{
   margin-right: 1px;
   width: 5vw;
-  margin-left: 63vw;
+  margin-left: 60vw;
 }
 
 #search-results{
@@ -168,12 +168,29 @@ color: black;
   height: 9vh;
 
 }
+.row{
+  padding-top: 10px;
+}
 @media screen and (max-width: 800px) {
+  .row{
+    padding-top: 10px;
+  }
   .restaurant-result-div{
-    img{
-      width: 25vw;
-    }
+    border-bottom: #00000077 dotted 1px;
 
+    text-align: right;
+    border-radius: 0px;
+
+    margin-left: 12px;
+    margin-bottom: 18px;
+    .rest-data{
+      padding-right: 3px;
+    }
+    img{
+      width: 85vw;
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+    }
   }
 
   .login-button{

@@ -119,6 +119,10 @@ class App extends Component {
     }
 
     search = async() => {
+        if (!this.state.searchRestaurantValue || this.state.searchRestaurantValue.length ===0){
+            console.log('can not search for empty', this.state.searchRestaurantValue);
+            return;
+        }
         const setState = this.setState.bind(this);
         setState({ thinking:true });
         setImmediate(async ()=>{
@@ -276,8 +280,13 @@ class App extends Component {
                     <Tab eventKey="search" title="חיפוש מסעדות" >
                         <div>
                             <div id="search-restaurant-div">
-                                <input type="text" id="search-restaurant-input" value={this.state.searchRestaurantValue} onChange={this.onSearchRestaurantValueChange} />
-                                <button id="search-restaurant-button" onClick={this.search} disabled={this.state.searchRestaurantValue.length === 0}>חיפוש</button>
+                                <input type="text" id="search-restaurant-input" value={this.state.searchRestaurantValue} onChange={this.onSearchRestaurantValueChange} onKeyDown={(e)=>{
+                                    console.log('e.key',e.key)
+                                    if (e.key === 'Enter') {
+                                        this.search()
+                                    }
+                                }}/>
+                                <button id="search-restaurant-button"  onClick={this.search} disabled={this.state.searchRestaurantValue.length === 0}>חיפוש</button>
                             </div>
                             <div id="search-results">
                                 { this.state.searchWasClicked ? <div>
