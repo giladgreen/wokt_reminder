@@ -5,6 +5,7 @@ import getSearchResults from './actions/getSearchResults';
 import subscribeRestaurant from './actions/subscribeRestaurant';
 import unsubscribeRestaurant from './actions/unsubscribeRestaurant';
 import getSubscriptions from './actions/getSubscriptions';
+import getLocationData from './actions/getLocationData';
 import FacebookLogin from  'react-facebook-login/dist/facebook-login-render-props';
 const GOOGLE_CLIENT_ID= '79744445247-r6hecpeic6csggbl5c40isiqfshf15l7.apps.googleusercontent.com';
 const FACEBOOK_APP_ID= '4683699325055690';
@@ -17,6 +18,7 @@ const isMobile = ( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Min
 const location = {
     lat: localStorage.getItem('lat') || '32.083758287943695',
     lon: localStorage.getItem('lon') || '34.79441564530134',
+    details: localStorage.getItem('address-details') || '',
 }
 function beep() {
     var snd = new Audio("data:audio/wav;base64,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qJrx4KOQjahZxWbcZgztj2c49nKmkId44S71j0c8eV9yDK6uPRzx5X18eDvjvQ6yKo9ZSS6l//8elePK/Lf//IInrOF/FvDoADYAGBMGb7FtErm5MXMlmPAJQVgWta7Zx2go+8xJ0UiCb8LHHdftWyLJE0QIAIsI+UbXu67dZMjmgDGCGl1H+vpF4NSDckSIkk7Vd+sxEhBQMRU8j/12UIRhzSaUdQ+rQU5kGeFxm+hb1oh6pWWmv3uvmReDl0UnvtapVaIzo1jZbf/pD6ElLqSX+rUmOQNpJFa/r+sa4e/pBlAABoAAAAA3CUgShLdGIxsY7AUABPRrgCABdDuQ5GC7DqPQCgbbJUAoRSUj+NIEig0YfyWUho1VBBBA//uQZB4ABZx5zfMakeAAAAmwAAAAF5F3P0w9GtAAACfAAAAAwLhMDmAYWMgVEG1U0FIGCBgXBXAtfMH10000EEEEEECUBYln03TTTdNBDZopopYvrTTdNa325mImNg3TTPV9q3pmY0xoO6bv3r00y+IDGid/9aaaZTGMuj9mpu9Mpio1dXrr5HERTZSmqU36A3CumzN/9Robv/Xx4v9ijkSRSNLQhAWumap82WRSBUqXStV/YcS+XVLnSS+WLDroqArFkMEsAS+eWmrUzrO0oEmE40RlMZ5+ODIkAyKAGUwZ3mVKmcamcJnMW26MRPgUw6j+LkhyHGVGYjSUUKNpuJUQoOIAyDvEyG8S5yfK6dhZc0Tx1KI/gviKL6qvvFs1+bWtaz58uUNnryq6kt5RzOCkPWlVqVX2a/EEBUdU1KrXLf40GoiiFXK///qpoiDXrOgqDR38JB0bw7SoL+ZB9o1RCkQjQ2CBYZKd/+VJxZRRZlqSkKiws0WFxUyCwsKiMy7hUVFhIaCrNQsKkTIsLivwKKigsj8XYlwt/WKi2N4d//uQRCSAAjURNIHpMZBGYiaQPSYyAAABLAAAAAAAACWAAAAApUF/Mg+0aohSIRobBAsMlO//Kk4soosy1JSFRYWaLC4qZBYWFRGZdwqKiwkNBVmoWFSJkWFxX4FFRQWR+LsS4W/rFRb/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////VEFHAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAU291bmRib3kuZGUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMjAwNGh0dHA6Ly93d3cuc291bmRib3kuZGUAAAAAAAAAACU=");
@@ -26,12 +28,25 @@ function beep() {
 function getLocation(){
     if (navigator.geolocation)
     {
-        console.log('calling getCurrentPosition')
-        navigator.geolocation.getCurrentPosition((position)=>{
+
+        navigator.geolocation.getCurrentPosition(async (position)=>{
+            const changed = (location.lat !== position.coords.latitude || location.lon !== position.coords.longitude);
+            console.log('getLocation changed',  changed)
             location.lat=position.coords.latitude;
             location.lon=position.coords.longitude;
-             localStorage.setItem('lat', location.lat);
-             localStorage.setItem('lon', location.lon);
+            localStorage.setItem('lat', location.lat);
+            localStorage.setItem('lon', location.lon);
+            if (changed){
+                const addressDetails = await getLocationData(location.lat, location.lon);
+                console.log('#### addressDetails', addressDetails);
+                localStorage.setItem('address-details', addressDetails);
+                location.details = addressDetails;
+
+                this.setState({ myAddress: addressDetails });
+            }else{
+                this.setState({ myAddress: location.details });
+            }
+
         },(err)=>{
             console.log('calling getCurrentPosition got error:', err)
         });
@@ -45,7 +60,7 @@ class App extends Component {
 
     constructor() {
         super();
-        setTimeout(getLocation, 500);
+
         const searchRestaurantValue = localStorage.getItem('searchRestaurantValue') || '';
         setTimeout(async ()=>{
             const authData = localStorage.getItem('authData');
@@ -54,6 +69,7 @@ class App extends Component {
                 if (provider && token) {
                     const { subscriptions, userContext } = await getSubscriptions(provider, token)
                     this.setState({ subscriptions, email: userContext.email });
+                    this.onLoggedIn();
                 }
             }
         },400)
@@ -64,9 +80,12 @@ class App extends Component {
             subscriptions:[],
             tabKey:'search',
             searchWasClicked: false,
-            thinking: false
+            thinking: false,
+            myAddress: '',
         };
-        //setInterval(this.checkForChanges,30000)
+    }
+    onLoggedIn = () =>{
+        getLocation.bind(this)();
     }
     onSearchRestaurantValueChange = (event) => {
         this.setState({ searchRestaurantValue: event.target.value });
@@ -176,16 +195,14 @@ class App extends Component {
                 const issueDate  = new Date();
                 localStorage.setItem('authData', JSON.stringify({provider, token, issueDate }));
                 localStorage.setItem('email', userContext.email);
+                this.onLoggedIn();
             } catch(error) {
                 localStorage.removeItem('authData');
                 console.log('error', error)
                 alert('failed to login');
                 setState({ thinking:false });
             }
-
         })
-
-
     };
 
     googleResponse = (response) => {
@@ -205,7 +222,7 @@ class App extends Component {
 
     };
     render() {
-        console.log('render, state:', this.state)
+
         const loggedIn = Boolean(this.state.email);
         if (!loggedIn){
 
@@ -268,7 +285,8 @@ class App extends Component {
                     <span id="log-out-button" onClick={()=>{
                         localStorage.removeItem('email');
                         this.setState({ email: null});
-                    }}>התנתקות</span>
+                    }}>התנתקות</span><br/>
+
                 </div>
                 <div id="main-header">
                    <u>תוסף לוולט</u>
@@ -287,6 +305,9 @@ class App extends Component {
                                     }
                                 }}/>
                                 <button id="search-restaurant-button"  onClick={this.search} disabled={this.state.searchRestaurantValue.length === 0}>חיפוש</button>
+                            </div>
+                            <div id="my-address-div">
+                                {this.state.myAddress ? <span id="address-info-text">חיפוש על פי הכתובת: {this.state.myAddress}  </span> : <span></span> }
                             </div>
                             <div id="search-results">
                                 { this.state.searchWasClicked ? <div>

@@ -10766,6 +10766,17 @@ body {
   direction: rtl;
 }
 
+#my-address-div {
+  alignment: right;
+  direction: rtl;
+  text-align: right;
+  margin-right: 10vw;
+}
+
+#address-info-text {
+  color: #4e555b;
+}
+
 #search-restaurant-input {
   width: 30vw;
   alignment: right;
