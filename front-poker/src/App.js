@@ -308,6 +308,13 @@ class App extends Component {
                             </div>
                             <div id="my-address-div">
                                 {this.state.myAddress ? <span id="address-info-text">חיפוש על פי הכתובת: {this.state.myAddress}  </span> : <span></span> }
+                                {this.state.myAddress ? <span id="reset-address" onClick={()=>{
+                                    localStorage.removeItem('lat');
+                                    localStorage.removeItem('lon');
+                                    localStorage.removeItem('address-details');
+                                    this.onLoggedIn();
+                                }
+                                }>אפס</span> : <span></span>}
                             </div>
                             <div id="search-results">
                                 { this.state.searchWasClicked ? <div>

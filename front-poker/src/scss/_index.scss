@@ -179,6 +179,14 @@ color: black;
 .row{
   padding-top: 10px;
 }
+#reset-address{
+color: #0f6674;
+  font-weight: bold;
+  margin-right: 6px;
+  margin-left: 6px;
+  text-decoration: underline;
+  cursor: pointer;
+}
 @media screen and (max-width: 800px) {
   .row{
     padding-top: 10px;
@@ -225,12 +233,15 @@ color: black;
   }
 
   #search-restaurant-input{
-    width: 50vw;
+    width: 56vw;
   }
 
   #search-restaurant-button{
     width: 20vw;
     margin-left: 10vw;
   }
-
+  #my-address-div{
+    margin-right: 4vw;
+    font-size: 0.8em;
+  }
 }
