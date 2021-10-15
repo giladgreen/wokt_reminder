@@ -10948,6 +10948,37 @@ body {
   cursor: pointer;
 }
 
+#explained {
+  text-align: center;
+}
+#explained img {
+  width: 19vw;
+  margin-bottom: 3vh;
+  border: solid 1px black;
+}
+#explained .row {
+  margin-left: 5vw;
+  margin-right: 5vw;
+}
+
+.explained-sub-header {
+  font-size: 1.3em;
+  margin-left: 5vw;
+  margin-right: 5vw;
+}
+
+#explained-header {
+  font-weight: bold;
+  font-size: 2em;
+  margin-top: 5vh;
+  margin-bottom: 3vh;
+}
+
+.email-address {
+  color: #5a626844;
+  margin-top: 7vh;
+}
+
 @media screen and (max-width: 800px) {
   .row {
     padding-top: 10px;
@@ -11002,6 +11033,26 @@ body {
   #my-address-div {
     margin-right: 4vw;
     font-size: 0.8em;
+  }
+
+  #explained img {
+    width: 80vw;
+    margin-bottom: 3vh;
+  }
+  #explained .row {
+    margin-right: 8vw;
+  }
+
+  .explained-sub-header {
+    font-size: 1em;
+    margin-left: 5vw;
+    margin-right: 5vw;
+  }
+
+  #explained-header {
+    font-size: 1.7em;
+    margin-top: 3vh;
+    margin-bottom: 1vh;
   }
 }
 

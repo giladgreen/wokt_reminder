@@ -254,6 +254,80 @@ class App extends Component {
                         )}/>
                     </div>
                 </div>
+                <div id="explained">
+                    <div id="explained-header">
+                        <hr/>
+                        ככה זה עובד:
+                        <hr/>
+                    </div>
+                    <div className="row">
+                        <div className="col-xs-4 ">
+                            <div className="explained-sub-header">
+                                כשמחפשים מסעדה בוולט
+                            </div>
+                            <div className="explained-sub-header">
+                                 היא לפעמים סגורה
+                            </div>
+                            <div >
+                                <img src="./wolt1.jpeg"/>
+                            </div>
+                        </div>
+                        <div className="col-xs-4 ">
+                            <div className="explained-sub-header">
+                                אבל אם נכנסים רואים שזה רק זמני
+                            </div>
+                            <div >
+                                <img src="./wolt2.jpeg"/>
+                            </div>
+                        </div>
+                        <div className="col-xs-4 ">
+                            <div className="explained-sub-header">
+                                אז מחפשים את המסעדה פה באתר
+                            </div>
+                            <div className="explained-sub-header">
+                                ונרשמים לעדכון עבורה
+                            </div>
+                            <div >
+                                <img src="./wolt3.jpeg"/>
+                            </div>
+                        </div>
+                        <div className="col-xs-4 ">
+                            <div className="explained-sub-header">
+                                וכשהמסעדה נפתחת מקבלים עדכון במייל
+                            </div>
+
+                            <div >
+                                <img src="./wolt4.jpeg"/>
+                            </div>
+                        </div>
+                        <div className="col-xs-4 ">
+                            <div className="explained-sub-header">
+                                ואז נכנסים שוב ומזמינים רגיל דרך הוולט
+                            </div>
+                            <div >
+                                <img src="./wolt5.jpeg"/>
+                            </div>
+                        </div>
+                        <div className="col-xs-4 ">
+                            <div className="explained-sub-header">
+                                האתר לא קשור בשום צורה לחברת וולט,
+                            </div>
+                            <div className="explained-sub-header">
+
+                                וכנראה יירד כשהם יתמכו באפשרות הזאת בעצמם
+                            </div>
+
+                            <div className="explained-sub-header email-address">
+
+                                green.gilad@gmail.com
+                            </div>
+
+                        </div>
+                    </div>
+
+
+
+                </div>
             </div>
         }
 
