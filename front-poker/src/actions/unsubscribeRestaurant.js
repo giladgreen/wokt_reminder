@@ -1,6 +1,5 @@
-
 import request from 'request';
-import URL_PREFIX from './url';
+import URL_PREFIX from '../helpers/url';
 
 async function unsubscribeRestaurant(restaurantName, restaurantId, location, provider, token) {
   const body = JSON.stringify({

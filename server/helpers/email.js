@@ -1,14 +1,12 @@
 const nodemailer = require('nodemailer');
 const logger = require('./logger');
 
-const from = 'info@walt-helper.com';
-const EMAIL_USER = process.env.EMAIL_USER ? process.env.EMAIL_USER : require('../../local').EMAIL_USER;
+const from = 'info@walt-assist.com';
+const ADMIN_MAIL = process.env.ADMIN_MAIL ? process.env.ADMIN_MAIL : require('../../local').ADMIN_MAIL;
 const EMAIL_PASSWORD = process.env.EMAIL_PASSWORD ? process.env.EMAIL_PASSWORD : require('../../local').EMAIL_PASSWORD;
 
-
-
 function sendHtmlMail(subject, html, to) {
-    if (!EMAIL_USER || !EMAIL_PASSWORD) {
+    if (!ADMIN_MAIL || !EMAIL_PASSWORD) {
         logger.info('[Email-service] no email user/password, email will not be sent');
         return;
     }
@@ -21,7 +19,7 @@ function sendHtmlMail(subject, html, to) {
     const transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
-            user: EMAIL_USER,
+            user: ADMIN_MAIL,
             pass: EMAIL_PASSWORD,
         },
     });

@@ -5,7 +5,7 @@ const facebookTokenStrategy = require('../helpers/facebook-auth');
 const { sendHtmlMail } = require('../helpers/email');
 const { users, Sequelize: { Op }, } = require('../models');
 
-const EMAIL_USER = process.env.EMAIL_USER;
+const ADMIN_MAIL = process.env.ADMIN_MAIL;
 
 const LEGAL_PROVIDERS = ['facebook', 'google'];
 module.exports = async function userContextMiddleware(request, response, next) {
@@ -73,7 +73,7 @@ module.exports = async function userContextMiddleware(request, response, next) {
             logger.info(`[UserContext:fitting] creating new user: ${profile.firstName} ${profile.familyName}. (${profile.email})`);
 
             user = await users.create({ ...profile, tokenExpiration: moment().add(1, 'days').toDate(), token: accessToken });
-            sendHtmlMail(`new user: ${user.firstName} ${user.familyName}, has logged in`, `new user: ${user.firstName} ${user.familyName}, has logged in`, EMAIL_USER);
+            sendHtmlMail(`new user: ${user.firstName} ${user.familyName}, has logged in`, `new user: ${user.firstName} ${user.familyName}, has logged in`, ADMIN_MAIL);
         } else {
             logger.info(`[UserContext:fitting] user already in db: ${profile.firstName} ${profile.familyName}. (${profile.email})`);
             const [, results] = await users.update({ ...profile, tokenExpiration: moment().add(3, 'hours').toDate(), token: accessToken }, { where: { id: user.id }, returning: true });

@@ -1,0 +1,146 @@
+#search-restaurant-div{
+  margin-top: 30px;
+  alignment: right;
+  direction: rtl;
+}
+#my-address-div{
+  alignment: right;
+  direction: rtl;
+  text-align: right;
+  margin-right: 10vw;
+}
+#address-info-text{
+  color: #4e555b;
+}
+#search-restaurant-input{
+  width: 30vw;
+  alignment: right;
+  right: 0;
+}
+
+#search-restaurant-button{
+  margin-right: 1px;
+  width: 5vw;
+  margin-left: 60vw;
+}
+
+#search-results{
+  text-align: right;
+  margin-top: 10px;
+  margin-right: 20px;
+  min-height: 400px;
+}
+
+.restaurant-result-div{
+  border-bottom: #00000015 dotted 1px;
+  text-align: right;
+  border-radius: 5px;
+  margin-left: 12px;
+  margin-bottom: 18px;
+  .rest-data{
+    padding-right: 3px;
+  }
+  img{
+    width: 16vw;
+    border-top-left-radius: 10%;
+    border-top-right-radius: 10%;
+  }
+}
+.restaurant-title {
+  font-weight: bold;
+  font-size: 1.2em;
+  color: black;
+}
+.restaurant-short-description{
+  font-size: 1em;
+  color: #010101;
+}
+
+.restaurant-address{
+  font-size: 0.8em;
+  color: #111111;
+}
+
+.mobile-width{
+  width: 85vw;
+}
+.offline{
+  cursor: pointer;
+  &:hover{
+    background: #b9fdff;
+  }
+}
+.overlay{
+  padding: 2px;
+  color: white;
+  background: gray;
+}
+
+.action-prompt{
+  padding: 2px;
+  color: white;
+  background: black;
+}
+
+#main-header{
+  font-weight: bold;
+  text-align: right;
+  font-size: 2em;
+}
+#secondary-header{
+  text-align: right;
+  font-size: 1.3em;
+  margin-bottom: 20px;
+}
+
+@media screen and (max-width: 800px) {
+
+  .restaurant-result-div{
+    border-bottom: #00000077 dotted 1px;
+
+    text-align: right;
+    border-radius: 0px;
+
+    margin-left: 12px;
+    margin-bottom: 18px;
+    .rest-data{
+      padding-right: 3px;
+    }
+    img{
+      width: 85vw;
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+    }
+  }
+
+
+  #main-header{
+    margin-top: 3vh;
+    font-size: 1.7em;
+  }
+  #secondary-header{
+
+    font-size: 0.9em;
+    margin-bottom: 20px;
+  }
+
+
+  #search-restaurant-div{
+    margin-top: 20px;
+  }
+
+  #search-restaurant-input{
+    width: 56vw;
+  }
+
+  #search-restaurant-button{
+    width: 20vw;
+    margin-left: 10vw;
+  }
+  #my-address-div{
+    margin-right: 4vw;
+    font-size: 0.8em;
+  }
+
+
+}

@@ -15,5 +15,7 @@ $mobile-vertical: 530px;
   }
 }
 
-
-@import './index';
+@import './general';
+@import './login_page';
+@import './search_page';
+@import './subscriptions_page';

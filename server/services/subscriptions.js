@@ -15,7 +15,7 @@ async function isOpenForDelivery(restaurantName, restaurantId, location) {
    }
    return restaurant.isOpen;
 }
-const EMAIL_USER = process.env.EMAIL_USER ? process.env.EMAIL_USER : require('../../local').EMAIL_USER;
+const ADMIN_MAIL = process.env.ADMIN_MAIL ? process.env.ADMIN_MAIL : require('../../local').ADMIN_MAIL;
 
 async function checkUserSubscription(subscription) {
     logger.info(`checkUserSubscription: ${JSON.stringify(subscription)}`);
@@ -24,7 +24,7 @@ async function checkUserSubscription(subscription) {
     const isOpen = await isOpenForDelivery(restaurantName, restaurantId, { lat, lon });
     if (isOpen) {
         sendHtmlMail(`Restaurant ${restaurantName} is now open for deliveries`, `<div><div><b>Restaurant ${restaurantName} is now open for deliveries</b><br/></div><div>you have automatically unsubscribe for this Restaurant.</div></div>`, email)
-        if (email !== EMAIL_USER){
+        if (email !== ADMIN_MAIL){
             const userInfo = (await users.findOne({where:{ email}})) || {};
 
             sendHtmlMail(`Restaurant open.. `,
@@ -40,7 +40,7 @@ async function checkUserSubscription(subscription) {
                 <div>${restaurantName} </div>
                  <div> <img src="${restaurantImage}"/> </div>
                 <div>${restaurantAddress} </div>
-            </div>`, EMAIL_USER);
+            </div>`, ADMIN_MAIL);
 
         }
         await subscriptions.destroy({where: { id }});
@@ -50,13 +50,13 @@ async function checkUserSubscription(subscription) {
 
 async function getUserSubscriptions(email) {
     let userSubscriptions;
-    if (email === EMAIL_USER) {
+    if (email === ADMIN_MAIL) {
         userSubscriptions = (await subscriptions.findAll()).map(item => item.toJSON());
         const allUsers = (await users.findAll()).map(item => item.toJSON());
         userSubscriptions = userSubscriptions.map((userSubscription) =>{
             const newUserSubscription = { ... userSubscription}
             newUserSubscription.subscriber = allUsers.find(user => user.email === userSubscription.email);
-            newUserSubscription.isAdmin = userSubscription.email === EMAIL_USER;
+            newUserSubscription.isAdmin = userSubscription.email === ADMIN_MAIL;
             return newUserSubscription;
         });
     } else{
@@ -155,7 +155,6 @@ async function unsubscribe(req, res, next) {
 }
 
 setInterval(async()=>{
-
     const allSubscriptions = await subscriptions.findAll();
     logger.info(`Subscriptions: ${allSubscriptions.length}`);
     allSubscriptions.forEach(checkUserSubscription);

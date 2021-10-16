@@ -1,0 +1,88 @@
+#login-page{
+  z-index: 3;
+  width: 100vw;
+  height: 100vh;
+  text-align: center;
+  padding-top: 5vh;
+  position: absolute;
+  top:0;
+  left: 0;
+  font-size: 1em;
+}
+
+.login-button{
+  text-decoration: none;
+  font-size: 4.5vh;
+  width: 50vw;
+  background: #151135;
+  border-radius: 2vh;
+  color: white;
+  margin-top: 1vh;
+  padding: 1.5vh;
+  cursor: pointer;
+  margin-right: 25vw;
+  right: 25vw;
+  margin-bottom: 3vh;
+  height: 9vh;
+
+}
+#explained{
+  text-align: center;
+  img{
+    width: 19vw;
+    margin-bottom: 3vh;
+    border: solid 1px black;
+  }
+  .row{
+    margin-left: 5vw;
+    margin-right: 5vw;
+
+  }
+}
+.explained-sub-header{
+  font-size: 1.3em;
+  margin-left: 5vw;
+  margin-right: 5vw;
+}
+#explained-header{
+  font-weight: bold;
+  font-size: 2em;
+  margin-top: 5vh;
+  margin-bottom: 3vh;
+}
+.email-address{
+  color: #5a626844;
+  margin-top: 7vh;
+}
+@media screen and (max-width: 800px) {
+  .login-button{
+
+    font-size: 3vh;
+    width: 70vw;
+    margin-top: 2vh;
+    margin-right: 15vw;
+
+  }
+  #explained{
+
+    img{
+      width: 80vw;
+      margin-bottom: 3vh;
+
+    }
+    .row{
+      margin-right: 8vw;
+    }
+  }
+  .explained-sub-header{
+    font-size: 1em;
+    margin-left: 5vw;
+    margin-right: 5vw;
+  }
+  #explained-header{
+
+    font-size: 1.7em;
+    margin-top: 3vh;
+    margin-bottom: 1vh;
+  }
+}

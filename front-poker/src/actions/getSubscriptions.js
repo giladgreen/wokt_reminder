@@ -1,6 +1,6 @@
 
 import request from 'request';
-import URL_PREFIX from './url';
+import URL_PREFIX from '../helpers/url';
 
 async function getSubscriptions(provider, token) {
   return new Promise((resolve, reject) => {

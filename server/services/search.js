@@ -8,7 +8,7 @@ async function getSearchResults(restaurantName, location) {
             headers: {'app-language': 'he'}
         };
         const { data: { sections } } = await axios.get(searchPath, options);
-        if (!sections[0].items){
+        if (!sections || !sections[0] || !sections[0].items){
             return [];
         }
         return sections[0].items.map((restaurant)=>{

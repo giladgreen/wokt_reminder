@@ -1,0 +1,104 @@
+body {
+  margin: 0;
+  font-family: sans-serif;
+  background-color: white;
+  font-size: 1em;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  padding: 10px;
+  direction: rtl;
+
+}
+.text-shadow{
+  text-shadow: 1px 1px black;
+}
+
+.sivivator{
+  z-index: 99999;
+  width: 100vw;
+  height: 100vh;
+  text-align: center;
+  position: absolute;
+  top:0;
+  left: 0;
+}
+#sivivator-gif{
+  width: 40vw;
+}
+.spaced-span{
+  margin-left: 3px;
+  margin-right: 3px;
+}
+.row{
+  padding-top: 10px;
+}
+#reset-address{
+color: #0f6674;
+  font-weight: bold;
+  margin-right: 6px;
+  margin-left: 6px;
+  text-decoration: underline;
+  cursor: pointer;
+}
+#explained{
+  text-align: center;
+  img{
+    width: 19vw;
+    margin-bottom: 3vh;
+    border: solid 1px black;
+  }
+  .row{
+    margin-left: 5vw;
+    margin-right: 5vw;
+
+  }
+}
+.explained-sub-header{
+  font-size: 1.3em;
+  margin-left: 5vw;
+  margin-right: 5vw;
+}
+#explained-header{
+  font-weight: bold;
+  font-size: 2em;
+  margin-top: 5vh;
+  margin-bottom: 3vh;
+}
+.email-address{
+  color: #5a626844;
+  margin-top: 7vh;
+}
+#login-data{
+  z-index: 4;
+  width: 100vw;
+  height: 4vh;
+  text-align: left;
+  padding-top: 5px;
+  padding-left: 10px;
+  position: absolute;
+  top:0;
+  left: 0;
+  font-size: 0.8em;
+  color: gray;
+}
+#log-out-button{
+  color: black;
+  font-weight: bold;
+  padding-left: 0px;
+  cursor: pointer;
+}
+#reset-address{
+  color: #0f6674;
+  font-weight: bold;
+  margin-right: 6px;
+  margin-left: 6px;
+  text-decoration: underline;
+  cursor: pointer;
+}
+@media screen and (max-width: 800px) {
+  .row{
+    padding-top: 10px;
+  }
+}

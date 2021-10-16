@@ -1,7 +1,6 @@
-
 import request from 'request';
+import URL_PREFIX from '../helpers/url';
 
-import URL_PREFIX from './url';
 async function getSearchResults(restaurantName, location) {
   return new Promise((resolve, reject) => {
     const options = {
