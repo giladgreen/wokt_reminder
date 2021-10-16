@@ -21,6 +21,8 @@ async function getLocationData(lat, lon) {
         console.error('failed to getLocationData', bodyObj);
         return reject(bodyObj.title);
       }
+      console.log('body type', typeof body)
+      console.log('body ',  body)
       const { address } = JSON.parse(body);
       return resolve(address);
     });
