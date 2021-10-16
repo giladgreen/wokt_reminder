@@ -18,7 +18,7 @@ class LoginPage extends Component {
         } catch(error) {
             localStorage.removeItem('authData');
             console.log('error', error)
-            alert('failed to login');
+            this.props.showAlert('ההתחברות נכשלה');
             this.props.setState({ thinking:false });
         }
     };

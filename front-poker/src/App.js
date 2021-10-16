@@ -5,6 +5,7 @@ import unsubscribeRestaurant from './actions/unsubscribeRestaurant';
 import getSubscriptions from './actions/getSubscriptions';
 import getLocationData from './actions/getLocationData';
 import Restaurant from './containers/restaurant';
+import ShowAlert from './containers/ShowAlert';
 import LoginPage from './components/login-page';
 import SearchTab from './components/search-tab';
 import SubscriptionsTab from './components/subscriptions-tab';
@@ -65,7 +66,8 @@ class App extends Component {
                     this.onLoggedIn();
                 }
             }
-        },400)
+        },400);
+
         this.state = {
             email: null,
             results:[],
@@ -74,7 +76,14 @@ class App extends Component {
             searchWasClicked: false,
             thinking: false,
             myAddress: '',
+            alertMessage: null,
         };
+    }
+    showAlert = (alertMessage) =>{
+        this.setState({alertMessage});
+        setTimeout(()=>{
+            this.setState({alertMessage: null});
+        },2000)
     }
     onLoggedIn = () =>{
         getLocation.bind(this)();
@@ -94,6 +103,7 @@ class App extends Component {
         setImmediate(async ()=>{
             const subscriptions = await subscribeRestaurant(name, restaurantId, location, provider, token);
             setState({ thinking:false, subscriptions, tabKey: 'subscriptions' });
+            this.showAlert('הרישום בוצע בהצלחה')
         })
     }
 
@@ -105,6 +115,7 @@ class App extends Component {
             if (confirm("להסיר את הרישום?")){
                 const subscriptions = await unsubscribeRestaurant(name, restaurantId, location, provider, token);
                 setState({ thinking:false, subscriptions, tabKey: 'subscriptions' });
+                this.showAlert('הרישום הוסר')
             }else{
                 setState({ thinking:false });
             }
@@ -145,43 +156,48 @@ class App extends Component {
     };
 
     onDisconnect = () =>{
-        localStorage.removeItem('email');this.setState({ email: null});
+        localStorage.removeItem('email');
+        this.setState({ email: null, alertMessage: 'התנתקת'});
+        setTimeout(()=>{
+            this.setState({alertMessage: null});
+        },2000)
     }
 
     render() {
         const loggedIn = Boolean(this.state.email);
-        if (!loggedIn){
-            return <LoginPage setState={this.setState.bind(this)} onLoggedIn={this.onLoggedIn.bind(this)}/>
-        }
-        console.log('app render, subscriptions:', this.state.subscriptions)
+        console.log('loggedIn',loggedIn)
         return (
             <div>
-                <div id="login-data">
-                    <div>{this.state.email}</div>
-                    <div> <span id="log-out-button" onClick={this.onDisconnect}>התנתקות</span></div>
-                </div>
-                <div id="main-header">
-                   <u>תוסף לוולט</u>
-                </div>
-                <div id="secondary-header">
-הירשמו לקבל התראה כשמסעדה נפתחת למשלוחים
-                </div>
-                <Tabs defaultActiveKey="search" id="uncontrolled-tab-example" style={{fontSize: isMobile ? "0.8em" : "1em"}} activeKey={this.state.tabKey} onSelect={this.onKeyChange} variant="pills">
-                    <Tab eventKey="search" title="חיפוש מסעדות" >
-                        <SearchTab search={this.search.bind(this)}
-                                   myAddress={this.state.myAddress}
-                                   onAddressReset={this.onAddressReset.bind(this)}
-                                   searchWasClicked={this.state.searchWasClicked}
-                                   results={this.state.results}
-                                   getRestaurantDiv={this.getRestaurantDiv.bind(this)}/>
+                {!loggedIn && <LoginPage setState={this.setState.bind(this)} onLoggedIn={this.onLoggedIn.bind(this)} showAlert={this.showAlert.bind(this)}/>}
+                {loggedIn && <div>
+                                    <div id="login-data">
+                                        <div>{this.state.email}</div>
+                                        <div> <span id="log-out-button" onClick={this.onDisconnect}>התנתקות</span></div>
+                                    </div>
+                                    <div id="main-header">
+                                       <u>תוסף לוולט</u>
+                                    </div>
+                                    <div id="secondary-header">
+                                           הירשמו לקבל התראה כשמסעדה נפתחת למשלוחים
+                                    </div>
+                                    <Tabs defaultActiveKey="search" id="uncontrolled-tab-example" style={{fontSize: isMobile ? "0.8em" : "1em"}} activeKey={this.state.tabKey} onSelect={this.onKeyChange} variant="pills">
+                                        <Tab eventKey="search" title="חיפוש מסעדות" >
+                                            <SearchTab search={this.search.bind(this)}
+                                                       myAddress={this.state.myAddress}
+                                                       onAddressReset={this.onAddressReset.bind(this)}
+                                                       searchWasClicked={this.state.searchWasClicked}
+                                                       results={this.state.results}
+                                                       getRestaurantDiv={this.getRestaurantDiv.bind(this)}/>
 
-                    </Tab>
-                    <Tab eventKey="subscriptions" title="רישומים" >
-                       <SubscriptionsTab subscriptions={this.state.subscriptions}
-                                         getRestaurantDiv={this.getRestaurantDiv.bind(this)}/>
-                    </Tab>
-                </Tabs>
-                {this.state.thinking ? <div className="sivivator"> <img id="sivivator-gif" src='loading.gif'/></div>: <div></div>}
+                                        </Tab>
+                                        <Tab eventKey="subscriptions" title="רישומים" >
+                                           <SubscriptionsTab subscriptions={this.state.subscriptions}
+                                                             getRestaurantDiv={this.getRestaurantDiv.bind(this)}/>
+                                        </Tab>
+                                    </Tabs>
+                            </div>}
+                {this.state.alertMessage && <ShowAlert message={this.state.alertMessage}/>}
+                {this.state.thinking && <div className="sivivator"> <img id="sivivator-gif" src='loading.gif'/></div>}
             </div>);
     }
 }
