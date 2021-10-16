@@ -24,13 +24,7 @@ class SearchTab extends Component {
             </div>
             <div id="my-address-div">
                 {this.props.myAddress ? <span id="address-info-text">חיפוש על פי הכתובת: {this.props.myAddress}  </span> : <span></span> }
-                {this.props.myAddress ? <span id="reset-address" onClick={()=>{
-                    localStorage.removeItem('lat');
-                    localStorage.removeItem('lon');
-                    localStorage.removeItem('address-details');
-                    this.props.onLoggedIn();
-                }
-                }>אפס</span> : <span></span>}
+                {this.props.myAddress ? <span id="reset-address" onClick={this.props.onAddressReset}>אפס</span> : <span></span>}
             </div>
             <div id="search-results">
                 { this.props.searchWasClicked ? <div>
