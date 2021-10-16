@@ -8,6 +8,7 @@ const logger = require('./server/helpers/logger');
 const userContextMiddleware = require('./server/middleware/userContext');
 const { subscribe, unsubscribe, getSubscriptions } = require('./server/services/subscriptions');
 const { search } = require('./server/services/search');
+const { getLocationAddress } = require('./server/services/location');
 
 const app = express();
 
@@ -40,6 +41,7 @@ app.post('/search', search);
 app.post('/subscriptions', userContextMiddleware, subscribe);
 app.post('/unsubscribe', userContextMiddleware, unsubscribe);
 app.get('/subscriptions', userContextMiddleware, getSubscriptions);
+app.get('/location-address',  getLocationAddress);
 
 app.listen(SERVER_PORT, () => {
     logger.info('### startListening ##');

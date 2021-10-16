@@ -1,16 +1,27 @@
 import request from 'request';
+import URL_PREFIX from "../helpers/url";
 
 async function getLocationData(lat, lon) {
   return new Promise((resolve, reject) => {
     const options = {
       method: 'GET',
-      url: `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lon}&key=AIzaSyDETKwQl9ihdbQaNYYngJ7tpM2f2pQlxLI&language=he&region=IL`,
+      url: `${URL_PREFIX}/location-address?lat=${lat}&lon=${lon}`,
+      headers: {
+        'Content-Type': 'application/json',
+      },
     };
 
     request(options, (error, response, body) => {
-      const result = JSON.parse(body).results;
-     // console.log('result',result)
-      const address = result[0].formatted_address;
+      if (error || response.statusCode >= 400) {
+        if (error) {
+          console.error('request cb error.failed to getLocationData', error);
+          return reject('failed to get getLocationData');
+        }
+        const bodyObj = JSON.parse(body);
+        console.error('failed to getLocationData', bodyObj);
+        return reject(bodyObj.title);
+      }
+      const { address } = JSON.parse(body);
       return resolve(address);
     });
   });
