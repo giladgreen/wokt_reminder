@@ -162,10 +162,11 @@ async function unsubscribe(req, res, next) {
 
 setInterval(async()=>{
     const allSubscriptions = await subscriptions.findAll();
-    logger.info(`Subscriptions: ${allSubscriptions.length}`);
+    const text = `checking on status for ${allSubscriptions.length} Subscriptions`;
+    logger.info(text);
     allSubscriptions.forEach(checkUserSubscription);
-    await logs.create({
-        text: `checking on status for ${allSubscriptions.length} Subscriptions`,
+    logs.create({
+        text,
         level: 'DEBUG'
     });
 },INTERVAL);
