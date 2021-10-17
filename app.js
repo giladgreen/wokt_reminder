@@ -9,7 +9,7 @@ const userContextMiddleware = require('./server/middleware/userContext');
 const { subscribe, unsubscribe, getSubscriptions } = require('./server/services/subscriptions');
 const { search } = require('./server/services/search');
 const { getLocationAddress } = require('./server/services/location');
-
+console.log('app starting now..')
 const app = express();
 
 const limiter = rateLimit({
