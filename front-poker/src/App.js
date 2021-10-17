@@ -5,7 +5,7 @@ import unsubscribeRestaurant from './actions/unsubscribeRestaurant';
 import getSubscriptions from './actions/getSubscriptions';
 import getLocationData from './actions/getLocationData';
 import Restaurant from './containers/restaurant';
-import ShowAlert from './containers/ShowAlert';
+import ShowAlert from './containers/showAlert';
 import LoginPage from './components/login-page';
 import SearchTab from './components/search-tab';
 import SubscriptionsTab from './components/subscriptions-tab';
@@ -16,6 +16,7 @@ import Tab from 'react-bootstrap/Tab'
 const isMobile = ( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent));
 const LAT_DEFAULT = '32.083758287943694';
 const LON_DEFAULT = '34.79441564530133';
+const DEFAULT_ALERT_LEVEL = 'show';
 const location = {
     lat: localStorage.getItem('lat') || LAT_DEFAULT,
     lon: localStorage.getItem('lon') || LON_DEFAULT,
@@ -77,12 +78,13 @@ class App extends Component {
             thinking: false,
             myAddress: '',
             alertMessage: null,
+            alertLevel: DEFAULT_ALERT_LEVEL
         };
     }
-    showAlert = (alertMessage) =>{
-        this.setState({alertMessage});
+    showAlert = (alertMessagem, alertLevel = DEFAULT_ALERT_LEVEL) =>{
+        this.setState({ alertMessage, alertLevel });
         setTimeout(()=>{
-            this.setState({alertMessage: null});
+            this.setState({alertMessage: null, alertLevel: DEFAULT_ALERT_LEVEL});
         },2000)
     }
     onLoggedIn = () =>{
@@ -103,7 +105,7 @@ class App extends Component {
         setImmediate(async ()=>{
             const subscriptions = await subscribeRestaurant(name, restaurantId, location, provider, token);
             setState({ thinking:false, subscriptions, tabKey: 'subscriptions' });
-            this.showAlert('הרישום בוצע בהצלחה')
+            this.showAlert('הרישום בוצע בהצלחה', 'success')
         })
     }
 
@@ -115,7 +117,7 @@ class App extends Component {
             if (confirm("להסיר את הרישום?")){
                 const subscriptions = await unsubscribeRestaurant(name, restaurantId, location, provider, token);
                 setState({ thinking:false, subscriptions, tabKey: 'subscriptions' });
-                this.showAlert('הרישום הוסר')
+                this.showAlert('הרישום הוסר', 'success')
             }else{
                 setState({ thinking:false });
             }
@@ -157,9 +159,9 @@ class App extends Component {
 
     onDisconnect = () =>{
         localStorage.removeItem('email');
-        this.setState({ email: null, alertMessage: 'התנתקת'});
+        this.setState({ alertLevel: 'info', email: null, alertMessage:  'התנתקת'});
         setTimeout(()=>{
-            this.setState({alertMessage: null});
+            this.setState({alertMessage: null, alertLevel: DEFAULT_ALERT_LEVEL});
         },2000)
     }
 
@@ -196,7 +198,7 @@ class App extends Component {
                                         </Tab>
                                     </Tabs>
                             </div>}
-                {this.state.alertMessage && <ShowAlert message={this.state.alertMessage}/>}
+                {this.state.alertMessage && <ShowAlert message={this.state.alertMessage} level={this.state.alertLevel}/>}
                 {this.state.thinking && <div className="sivivator"> <img id="sivivator-gif" src='loading.gif'/></div>}
             </div>);
     }

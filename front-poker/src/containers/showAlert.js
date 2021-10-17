@@ -3,9 +3,9 @@ import { useAlert } from 'react-alert'
 
 const ShowAlert = (props) => {
     const alert = useAlert();
-    const {message} = props;
+    const {message, level = 'error'} = props;
     setTimeout(()=>{
-            alert.error(message);
+            alert[level](message);
             console.log('alert attributes', Object.keys(alert))
     },1);
     return (
