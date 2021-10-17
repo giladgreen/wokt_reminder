@@ -133,7 +133,7 @@ async function getSubscriptions(req, res, next) {
         const { userContext } = req;
         console.log('getSubscriptions, userContext', userContext);
         logs.create({
-            text: `getSubscriptions, userContext: ${JSON.stringify(userContext)}`,
+            text: `Login, ${userContext.firstName} ${userContext.familyName}, ${userContext.email}`,
             level: 'INFO'
         })
         const { email } = userContext;
