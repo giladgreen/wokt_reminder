@@ -103,6 +103,11 @@ async function subscribe(req, res) {
               restaurantImage,
               restaurantAddress,
           })
+
+          logs.create({
+              text: `new Subscription, restaurantName: ${restaurantName}, email: ${email}`,
+              level: 'INFO'
+          })
       }
 
       const userSubscriptions = await getUserSubscriptions(email);
@@ -149,7 +154,10 @@ async function unsubscribe(req, res, next) {
       }
 
       logger.info(`unsubscribe restaurantName: ${restaurantName},restaurantId:${restaurantId} email=${email},  lat=${location.lat}, lon=${location.lon}`);
-
+      logs.create({
+          text: `unsubscribe, restaurantName: ${restaurantName}, email: ${email}`,
+          level: 'INFO'
+      })
       await subscriptions.destroy({
           where:{
               restaurantId,
