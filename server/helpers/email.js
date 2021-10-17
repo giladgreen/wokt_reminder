@@ -1,5 +1,6 @@
 const nodemailer = require('nodemailer');
 const logger = require('./logger');
+const { logs } = require('../models');
 
 const from = 'info@walt-assist.com';
 const ADMIN_MAIL = process.env.ADMIN_MAIL ? process.env.ADMIN_MAIL : require('../../local').ADMIN_MAIL;
@@ -26,6 +27,11 @@ function sendHtmlMail(subject, html, to) {
     transporter.sendMail(mailOptions, (error) => {
         if (error) {
             logger.error(`[Email-service] error sending email: [from: ${mailOptions.from}] [to: ${to}] [subject: ${subject}] - error: ${JSON.stringify(error)}`);
+            logs.create({
+                text: `error sending email. [from: ${mailOptions.from}] [to: ${to}] [subject: ${subject}]  error message: ${error.message}, error stack: ${error.stack}`,
+                level: 'ERROR'
+            });
+
         } else {
             logger.info(`[Email-service] email sent: [from: ${mailOptions.from}] [to: ${to}] [subject: ${subject}]`);
         }

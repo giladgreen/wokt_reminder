@@ -1,5 +1,6 @@
 const axios = require('axios');
 const logger = require('../helpers/logger');
+const { logs } = require('../models');
 
 async function getSearchResults(restaurantName, location) {
     try {
@@ -21,6 +22,12 @@ async function getSearchResults(restaurantName, location) {
         logger.error(`getSearchResults ERROR! restaurantName: ${restaurantName}, lat=${location.lat}, lon=${location.lon}`);
         logger.error(`error message: ${e.message}`);
         logger.error(`error stack: ${e.stack}`);
+
+        logs.create({
+            text: `error on getSearchResults. restaurantName: ${restaurantName}, lat=${location.lat}, lon=${location.lon}, error message: ${e.message}, error stack: ${e.stack}`,
+            level: 'ERROR'
+        });
+
         return [];
     }
 }

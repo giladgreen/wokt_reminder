@@ -3,7 +3,7 @@ const logger = require('../helpers/logger');
 const googleTokenStrategy = require('../helpers/google-auth');
 const facebookTokenStrategy = require('../helpers/facebook-auth');
 const { sendHtmlMail } = require('../helpers/email');
-const { users, Sequelize: { Op }, } = require('../models');
+const { users, logs, Sequelize: { Op }, } = require('../models');
 
 const ADMIN_MAIL = process.env.ADMIN_MAIL;
 
@@ -91,6 +91,10 @@ module.exports = async function userContextMiddleware(request, response, next) {
         return next();
     } catch (error) {
         logger.error(`[UserContext:fitting] error: ${JSON.stringify(error)} `);
+        logs.create({
+            text: `error in UserContext fitting. error message: ${error.message}, error stack: ${error.stack}`,
+            level: 'ERROR'
+        });
         return next(new Error('failed to login'));
     }
 }

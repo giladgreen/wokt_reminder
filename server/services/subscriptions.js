@@ -2,9 +2,9 @@ const moment = require('moment');
 const logger = require('../helpers/logger');
 const { getSpecificRestaurant } = require('./search');
 const { sendHtmlMail } = require('../helpers/email');
-const { subscriptions, users, Sequelize: { Op }, } = require('../models');
-const INTERVAL = 30000;
-const PRON_INTERVAL = 1000 * 60 * 10;
+const { subscriptions, users, logs, Sequelize: { Op }, } = require('../models');
+const INTERVAL = 30000;//30 sec
+const PRON_INTERVAL = 1000 * 60 * 10;//10 minutes
 const AMOUNT = 30;
 const UNITS = 'hours';
 
@@ -113,6 +113,12 @@ async function subscribe(req, res) {
       logger.info(`restaurantName: ${restaurantName},restaurantId:${restaurantId} email=${email},  lat=${location.lat}, lon=${location.lon}`);
       logger.error(`error stack: ${e.stack}`);
       logger.error(`error message: ${e.message}`);
+
+      logs.create({
+        text: `error on subscribe. restaurantName: ${restaurantName},restaurantId:${restaurantId} email=${email},  lat=${location.lat}, lon=${location.lon}, error message: ${e.message}, error stack: ${e.stack}`,
+        level: 'ERROR'
+      });
+
       return res.status(500).send({ message: 'something went wrong' });
   }
 }
@@ -158,13 +164,20 @@ setInterval(async()=>{
     const allSubscriptions = await subscriptions.findAll();
     logger.info(`Subscriptions: ${allSubscriptions.length}`);
     allSubscriptions.forEach(checkUserSubscription);
+    await logs.create({
+        text: `checking on status for ${allSubscriptions.length} Subscriptions`,
+        level: 'DEBUG'
+    });
 },INTERVAL);
 
 
 //run every PRON_INTERVAL time nd delete from subscriptions table anything older then X hours
 setInterval(async()=>{
-    logger.info(`pronning..`);
-
+    logger.info(`pruning..`);
+    await logs.create({
+        text: 'performing pruning',
+        level: 'DEBUG'
+    });
     const lastDate = moment().subtract(AMOUNT, UNITS).toDate();
     await subscriptions.destroy({where:{
             createdAt: {
