@@ -4,7 +4,7 @@ const { getSpecificRestaurant } = require('./search');
 const { sendHtmlMail } = require('../helpers/email');
 const { subscriptions, users, logs, Sequelize: { Op }, } = require('../models');
 const INTERVAL = 30000;//30 sec
-const PRON_INTERVAL = 1000 * 60 * 10;//10 minutes
+const PRUNE_INTERVAL = 1000 * 60 * 10;//10 minutes
 const AMOUNT = 30;
 const UNITS = 'hours';
 
@@ -172,7 +172,7 @@ setInterval(async()=>{
 },INTERVAL);
 
 
-//run every PRON_INTERVAL time nd delete from subscriptions table anything older then X hours
+//run every PRUNE_INTERVAL time nd delete from subscriptions table anything older then X hours
 setInterval(async()=>{
     logger.info(`pruning..`);
     await logs.create({
@@ -185,7 +185,7 @@ setInterval(async()=>{
                 [Op.lte]: lastDate,
             },
         }})
-},PRON_INTERVAL);
+},PRUNE_INTERVAL);
 
 
 module.exports = {subscribe,unsubscribe, getSubscriptions }
