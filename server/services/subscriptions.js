@@ -127,6 +127,10 @@ async function getSubscriptions(req, res, next) {
     try {
         const { userContext } = req;
         console.log('getSubscriptions, userContext', userContext);
+        logs.create({
+            text: `getSubscriptions, userContext: ${JSON.stringify(userContext)}`,
+            level: 'INFO'
+        })
         const { email } = userContext;
         const userSubscriptions = await getUserSubscriptions(email);
         return res.status(200).send({ subscriptions: userSubscriptions, userContext });
@@ -162,13 +166,8 @@ async function unsubscribe(req, res, next) {
 
 setInterval(async()=>{
     const allSubscriptions = await subscriptions.findAll();
-    const text = `checking on status for ${allSubscriptions.length} Subscriptions`;
-    logger.info(text);
+    logger.info(`checking on status for ${allSubscriptions.length} Subscriptions`);
     allSubscriptions.forEach(checkUserSubscription);
-    logs.create({
-        text,
-        level: 'DEBUG'
-    });
 },INTERVAL);
 
 
