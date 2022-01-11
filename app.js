@@ -7,6 +7,7 @@ const SERVER_PORT = process.env.PORT || 5002;
 const logger = require('./server/helpers/logger');
 const userContextMiddleware = require('./server/middleware/userContext');
 const { subscribe, unsubscribe, getSubscriptions } = require('./server/services/subscriptions');
+
 const { search } = require('./server/services/search');
 const { getLocationAddress } = require('./server/services/location');
 console.log('app starting now..')
@@ -16,7 +17,7 @@ const limiter = rateLimit({
     windowMs: 10 * 60 * 1000, // 10 minutes
     max: 5000, // limit each IP to 5000 requests per windowMs
 });
-
+require('./server/services/ski');
 const PUBLIC = path.join(__dirname, 'public');
 
 

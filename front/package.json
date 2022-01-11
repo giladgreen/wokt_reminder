@@ -1,6 +1,6 @@
 {
-  "name": "front-poker",
-  "version": "1.0.41",
+  "name": "front",
+  "version": "1.0.0",
   "private": true,
   "dependencies": {
     "@material-ui/core": "^4.8.0",
@@ -30,12 +30,18 @@
     "resize-base64": "^1.0.12",
     "semantic-ui-react": "^0.88.2",
     "semver": "6.3.0",
-    "web-vitals": "^1.1.1"
+    "web-vitals": "^1.1.1",
+    "mobx": "^5.15.4",
+    "mobx-react": "^6.1.8",
+    "mobx-state-tree": "^3.15.0"
+  },
+  "devDependencies": {
+    "mobx-devtools-mst": "^0.9.30"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "build-and-deploy": "npm version patch && rm -fr /Users/giladgreen/dev/wolt_wrapper/front-poker/build && react-scripts build && rm -fr /Users/giladgreen/dev/wolt_wrapper/public/* && mv -f /Users/giladgreen/dev/wolt_wrapper/front-poker/build/* /Users/giladgreen/dev/wolt_wrapper/public && echo 'now only push'",
+    "build-and-deploy": "npm version patch && rm -fr /Users/giladgreen/dev/wolt_wrapper/front/build && react-scripts build && rm -fr /Users/giladgreen/dev/wolt_wrapper/public/* && mv -f /Users/giladgreen/dev/wolt_wrapper/front/build/* /Users/giladgreen/dev/wolt_wrapper/public && echo 'now only push'",
     "watch": "cd src && sass --watch scss:style",
     "lint": "./node_modules/.bin/eslint \"./**/*.js*\" --fix"
   },

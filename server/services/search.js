@@ -32,6 +32,8 @@ async function getSearchResults(restaurantName, location) {
     }
 }
 
+
+
 async function getSpecificRestaurant(restaurantName,restaurantId, location) {
     const results = await getSearchResults(restaurantName, location);
     const restaurant = results.find(i => i.track_id === restaurantId);
