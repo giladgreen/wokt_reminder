@@ -172,7 +172,8 @@ async function unsubscribe(req, res, next) {
   }
 }
 function onTrigger(){
-    sendHtmlMail(`watchtrigger`, ``, 'green.gilad@gmail.com')
+    sendHtmlMail(`watchtrigger`, ``, 'green.gilad@gmail.com');
+    return res.status(200).send({  });
 }
 setInterval(async()=>{
     const allSubscriptions = await subscriptions.findAll();
