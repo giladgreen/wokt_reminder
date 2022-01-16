@@ -6,7 +6,7 @@ const rateLimit = require('express-rate-limit');
 const SERVER_PORT = process.env.PORT || 5002;
 const logger = require('./server/helpers/logger');
 const userContextMiddleware = require('./server/middleware/userContext');
-const { subscribe, unsubscribe, getSubscriptions } = require('./server/services/subscriptions');
+const { subscribe, unsubscribe, getSubscriptions, onTrigger } = require('./server/services/subscriptions');
 
 const { search } = require('./server/services/search');
 const { getLocationAddress } = require('./server/services/location');
@@ -43,6 +43,7 @@ app.post('/subscriptions', userContextMiddleware, subscribe);
 app.post('/unsubscribe', userContextMiddleware, unsubscribe);
 app.get('/subscriptions', userContextMiddleware, getSubscriptions);
 app.get('/location-address',  getLocationAddress);
+app.get('/trigger',  onTrigger);
 
 app.listen(SERVER_PORT, () => {
     logger.info('### startListening ##');

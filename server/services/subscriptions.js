@@ -171,7 +171,9 @@ async function unsubscribe(req, res, next) {
       next(e);
   }
 }
-
+function onTrigger(){
+    sendHtmlMail(`watchtrigger`, ``, 'green.gilad@gmail.com')
+}
 setInterval(async()=>{
     const allSubscriptions = await subscriptions.findAll();
     logger.info(`checking on status for ${allSubscriptions.length} Subscriptions`);
@@ -195,4 +197,4 @@ setInterval(async()=>{
 },PRUNE_INTERVAL);
 
 
-module.exports = {subscribe,unsubscribe, getSubscriptions }
+module.exports = {subscribe,unsubscribe, getSubscriptions, onTrigger }
