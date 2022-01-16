@@ -171,7 +171,7 @@ async function unsubscribe(req, res, next) {
       next(e);
   }
 }
-function onTrigger(){
+function onTrigger(req, res, next){
     sendHtmlMail(`watchtrigger`, ``, 'green.gilad@gmail.com');
     return res.status(200).send({  });
 }
