@@ -188,7 +188,9 @@ async function onTrigger(req, res){
     }
     const callResult = await axios.get(options.url,options);
     const {err, msg } = callResult.data;
-    sendHtmlMail(`watchtrigger`, `<div><div>Error:${err} </div><div>Message:${msg} </div></div>`, 'green.gilad@gmail.com');
+    if (err){
+        sendHtmlMail(`watchtrigger`, `<div><div>Error:${err} </div><div>Message:${msg} </div></div>`, 'green.gilad@gmail.com');
+    }
     return res.status(200).send({ err, msg });
 }
 setInterval(async()=>{
